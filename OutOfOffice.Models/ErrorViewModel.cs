@@ -1,4 +1,4 @@
-namespace OutOfOffice.Web.Models
+namespace OutOfOffice.Models
 {
     public class ErrorViewModel
     {
