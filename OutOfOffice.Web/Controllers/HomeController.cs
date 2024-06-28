@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using OutOfOffice.Web.Models;
+using OutOfOffice.Models;
 using System.Diagnostics;
 
 namespace OutOfOffice.Web.Controllers
