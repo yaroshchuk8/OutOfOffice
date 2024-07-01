@@ -8,6 +8,9 @@ namespace OutOfOffice.DataAccess.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Employee> Employee { get; set; }
+        public DbSet<Project> Project { get; set; }
+        public DbSet<LeaveRequest> LeaveRequest { get; set; }
+        public DbSet<ApprovalRequest> ApprovalRequest { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -17,6 +20,11 @@ namespace OutOfOffice.DataAccess.Data
                 .HasOne(e => e.PeoplePartner)
                 .WithMany()
                 .HasForeignKey(e => e.PeoplePartnerId);
+
+            modelBuilder.Entity<Employee>()
+                .HasMany(e => e.Projects)
+                .WithMany(p => p.Members);
+
 
             /*modelBuilder.Entity<Employee>().HasData(
                 new Employee()

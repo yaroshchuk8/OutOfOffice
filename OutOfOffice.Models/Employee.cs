@@ -21,10 +21,11 @@ namespace OutOfOffice.Models
         [Required]
         public string Status { get; set; }
 
-        public int? PeoplePartnerId { get; set; }
-
+        // Navigation property (PeoplePartner < Employee)
         [ValidateNever]
         public Employee PeoplePartner { get; set; }
+
+        public int? PeoplePartnerId { get; set; }
 
         [Required]
         [Range(0, 30)]
@@ -33,5 +34,14 @@ namespace OutOfOffice.Models
         [ValidateNever]
         [Display(Name = "Photo")]
         public string? PhotoUrl { get; set; }
+
+        // Navigation collections
+        // (Employee = Project)
+        [ValidateNever]
+        public ICollection<Project> Projects { get; set; }
+        
+        // (Employee < LeaveRequest)
+        [ValidateNever]
+        public ICollection<LeaveRequest> LeaveRequests { get; set; }
     }
 }

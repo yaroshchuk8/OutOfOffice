@@ -12,9 +12,8 @@ namespace OutOfOffice.Models
         [Required]
         public int EmployeeId { get; set; }
 
-        [ForeignKey("EmployeeId")]
-        [ValidateNever]
-        public Employee PeoplePartner { get; set; }
+        [Required]
+        public string AbsenceReason { get; set; }
 
         [Required]
         public DateTime StartDate{ get; set; }
@@ -26,5 +25,9 @@ namespace OutOfOffice.Models
 
         [Required]
         public string Status { get; set; }
+
+        // Navigation property
+        [ValidateNever]
+        public Employee Employee { get; set; }
     }
 }

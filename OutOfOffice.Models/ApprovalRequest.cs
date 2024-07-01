@@ -12,13 +12,19 @@ namespace OutOfOffice.Models
         [Required]
         public int ApproverId { get; set; }
 
-        [ForeignKey("ApproverId")]
-        [ValidateNever]
-        public Employee Approver { get; set; }
+        [Required]
+        public LeaveRequest LeaveRequestId { get; set; }
 
         [Required]
         public string Status { get; set; }
 
         public string Comment { get; set; }
+
+        // Navigation properties
+        [ValidateNever]
+        public Employee Approver { get; set; }
+
+        [ValidateNever]
+        public LeaveRequest LeaveRequest { get; set; }
     }
 }

@@ -15,7 +15,7 @@ namespace OutOfOffice.Web.Controllers
 
         public IActionResult Index()
         {
-            List<Employee> employee = _context.Employee.ToList();                                      
+            IEnumerable<Employee> employee = from e in _context.Employee select e;
             return View();
         }
     }
