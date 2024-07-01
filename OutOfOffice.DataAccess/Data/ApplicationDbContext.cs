@@ -24,7 +24,17 @@ namespace OutOfOffice.DataAccess.Data
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Projects)
                 .WithMany(p => p.Members)
-                .UsingEntity(ent => ent.ToTable("EmployeeProject"));
+                .UsingEntity<Dictionary<string, object>>(
+                    "EmployeeProject",
+                    j => j.HasOne<Project>()
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade),
+                    j => j.HasOne<Employee>()
+                        .WithMany()
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                );
 
             modelBuilder.Entity<Project>()
                 .HasOne(p => p.Manager)
@@ -43,8 +53,9 @@ namespace OutOfOffice.DataAccess.Data
 
             modelBuilder.Entity<ApprovalRequest>()
                 .HasOne(ar => ar.LeaveRequest)
-                .WithOne()
-                .HasForeignKey<ApprovalRequest>(ar => ar.LeaveRequestId);
+                .WithMany()
+                .HasForeignKey(ar => ar.LeaveRequestId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             /*modelBuilder.Entity<Employee>().HasData(
                 new Employee()
