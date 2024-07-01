@@ -21,10 +21,8 @@ namespace OutOfOffice.Models
         [Required]
         public string Status { get; set; }
 
-        [Required]
-        public int PeoplePartnerId { get; set; }
+        public int? PeoplePartnerId { get; set; }
 
-        [ForeignKey("PeoplePartnerId")]
         [ValidateNever]
         public Employee PeoplePartner { get; set; }
 
@@ -34,6 +32,6 @@ namespace OutOfOffice.Models
 
         [ValidateNever]
         [Display(Name = "Photo")]
-        public string PhotoUrl { get; set; }
+        public string? PhotoUrl { get; set; }
     }
 }

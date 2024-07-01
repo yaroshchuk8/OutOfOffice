@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using OutOfOffice.DataAccess;
+using OutOfOffice.DataAccess.Data;
 
 namespace OutOfOffice.Web
 {
@@ -8,12 +8,12 @@ namespace OutOfOffice.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddDbContext<ApplicationDbContext>(
-                options => options.UseSqlServer(
-                    builder.Configuration.GetConnectionString("DefaultConnection"))
+                options => options.UseSqlServer(connectionString)
                 );
 
             var app = builder.Build();

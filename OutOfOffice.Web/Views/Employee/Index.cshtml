@@ -1,0 +1,63 @@
+﻿@model List<Employee>
+
+@{
+    ViewData["Title"] = "Employee";
+}
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-primary">Employee Table</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Employee" asp-action="Upsert" class="btn btn-primary btn-lg">
+                <i class="bi bi-file-earmark-plus"></i>  Create
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Full Name</th>
+                <th>Subdivision</th>
+                <th>Position</th>
+                <th>Status</th>
+                <th>People Partner Id</th>
+                <th>Out-of-Office Balance</th>
+                <th>Photo</th>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Employee e in Model)
+            {
+                <tr>
+                    <td>@e.Id</td>
+                    <td>@e.FullName</td>
+                    <td>@e.Subdivision</td>
+                    <td>@e.Position</td>
+                    <td>@e.Status</td>
+                    <td>@e.PeoplePartnerId</td>
+                    <td>@e.OutOfOfficeBalance</td>
+                    <td><img src="@e.PhotoUrl" style="max-height:100px;width:auto"></td>
+                    <td>
+                        <div class="w-50 btn-group" role="group">
+                            <a asp-controller="Employee" asp-action="Upsert" asp-route-id="@e.Id" class="btn btn-primary mx-2">
+                                <i class="bi bi-pencil-square"></i> Edit
+                            </a>
+                            <a class="btn btn-danger mx-2 delete-btn" data-url="@Url.Action("Delete", "Movie", new { id = e.Id })">
+                                <i class="bi bi-trash3-fill"></i> Delete
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <script src="~/js/itemDeletion.js"></script>
+}
