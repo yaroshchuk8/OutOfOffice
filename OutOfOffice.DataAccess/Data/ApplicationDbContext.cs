@@ -23,8 +23,28 @@ namespace OutOfOffice.DataAccess.Data
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Projects)
-                .WithMany(p => p.Members);
+                .WithMany(p => p.Members)
+                .UsingEntity(ent => ent.ToTable("EmployeeProject"));
 
+            modelBuilder.Entity<Project>()
+                .HasOne(p => p.Manager)
+                .WithMany()
+                .HasForeignKey(p => p.ManagerId);
+
+            modelBuilder.Entity<LeaveRequest>()
+                .HasOne(lr => lr.Employee)
+                .WithMany(e => e.LeaveRequests)
+                .HasForeignKey(lr => lr.EmployeeId);
+
+            modelBuilder.Entity<ApprovalRequest>()
+                .HasOne(ar => ar.Approver)
+                .WithMany()
+                .HasForeignKey(ar => ar.ApproverId);
+
+            modelBuilder.Entity<ApprovalRequest>()
+                .HasOne(ar => ar.LeaveRequest)
+                .WithOne()
+                .HasForeignKey<ApprovalRequest>(ar => ar.LeaveRequestId);
 
             /*modelBuilder.Entity<Employee>().HasData(
                 new Employee()
