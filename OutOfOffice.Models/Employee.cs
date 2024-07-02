@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -10,6 +11,9 @@ namespace OutOfOffice.Models
         public int Id { get; set; }
 
         [Required]
+        public string UserId { get; set; }
+
+        [Required]
         public string FullName { get; set; }
 
         [Required]
@@ -19,11 +23,7 @@ namespace OutOfOffice.Models
         public string Position { get; set; }
 
         [Required]
-        public string Status { get; set; }
-
-        // Navigation property (PeoplePartner < Employee)
-        [ValidateNever]
-        public Employee PeoplePartner { get; set; }
+        public string Status { get; set; }        
 
         public int? PeoplePartnerId { get; set; }
 
@@ -35,12 +35,18 @@ namespace OutOfOffice.Models
         [Display(Name = "Photo")]
         public string? PhotoUrl { get; set; }
 
+        // Navigation properties
+        [ValidateNever]
+        [ForeignKey("UserId")]
+        public IdentityUser User { get; set; }
+
+        [ValidateNever]
+        public Employee PeoplePartner { get; set; }
+
         // Navigation collections
-        // (Employee = Project)
         [ValidateNever]
         public ICollection<Project> Projects { get; set; }
-        
-        // (Employee < LeaveRequest)
+
         [ValidateNever]
         public ICollection<LeaveRequest> LeaveRequests { get; set; }
     }

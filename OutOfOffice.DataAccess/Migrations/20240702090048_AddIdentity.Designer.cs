@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OutOfOffice.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using OutOfOffice.DataAccess.Data;
 namespace OutOfOffice.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240702090048_AddIdentity")]
+    partial class AddIdentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -62,32 +65,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379",
-                            Name = "HR manager",
-                            NormalizedName = "HR MANAGER"
-                        },
-                        new
-                        {
-                            Id = "57bde49e-8d41-45c4-baea-29141e2b2b6c",
-                            Name = "Project manager",
-                            NormalizedName = "PROJECT MANAGER"
-                        },
-                        new
-                        {
-                            Id = "92d723f4-81c5-4109-b962-bbec93185fe7",
-                            Name = "Employee",
-                            NormalizedName = "EMPLOYEE"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -178,78 +155,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "5d7c1d79-c2c6-4f3b-9fd2-015861e0aaa3",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKmbPuLYzDgyyZRAm0T4UPj9T8/u+OsOpw2leJ+HVnMZqOwu4oCqtHc0iZ6pB7RSAA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "a3a755f4-d183-4ac5-891a-530aa7c1c085",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "91565f7d-00f0-4e36-8b54-0d9210668113",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "55d0dbae-cc4a-4301-ae5b-1f4d08f3e854",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "HRMANAGER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHb0zDNzZ/LDpfmBLF+LLXNyQWoGhiT9+2lxI373ICMAQIthcgcPv4SIaeaSf16xKw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "b878c6e2-8a20-40da-a426-3611050aa5cf",
-                            TwoFactorEnabled = false,
-                            UserName = "hrmanager@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "4779f1cb-3d3a-4bbd-a3a8-39440ca532ed",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "PROJECTMANAGER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMCS1jCVwqIicxbFQanwgwKqFdoyiPgaFq1YpuQ6kKICwpKbntC1I8JTz7RwdzdrvA==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "70b8ccf2-de00-461b-bdf6-04d61955a33a",
-                            TwoFactorEnabled = false,
-                            UserName = "projectmanager@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d27e22e8-1de2-48e9-9e2c-3cea10c8c93d",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "EMPLOYEE1@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAENzbnXf+HuYW+duipUXvROpGTDurauiY1x5+wNBCdA+oGxPWTohMOwB6u0923+0D7A==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "7f601b68-99b1-49b3-8705-296473bb995d",
-                            TwoFactorEnabled = false,
-                            UserName = "employee1@gmail.com"
-                        },
-                        new
-                        {
-                            Id = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "576a9788-25dd-4433-9116-f21ec34c65a8",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "EMPLOYEE2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIWJg/HZLuMMJneCEWVjeBtrdVyj/sX542mUWXK3Rj9sDAGtuaqyufdpsD09mplQvQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "dbf3b871-811c-4290-a4a5-4ffb32e1d713",
-                            TwoFactorEnabled = false,
-                            UserName = "employee2@gmail.com"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -314,33 +219,6 @@ namespace OutOfOffice.DataAccess.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        },
-                        new
-                        {
-                            UserId = "91565f7d-00f0-4e36-8b54-0d9210668113",
-                            RoleId = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379"
-                        },
-                        new
-                        {
-                            UserId = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
-                            RoleId = "57bde49e-8d41-45c4-baea-29141e2b2b6c"
-                        },
-                        new
-                        {
-                            UserId = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
-                            RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
-                        },
-                        new
-                        {
-                            UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
-                            RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -428,61 +306,11 @@ namespace OutOfOffice.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("PeoplePartnerId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Employee");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FullName = "Alyssa Kennedy",
-                            OutOfOfficeBalance = 15,
-                            PhotoUrl = "\\photos\\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png",
-                            Position = "Hr Manager",
-                            Status = "Active",
-                            Subdivision = "Recruiting",
-                            UserId = "91565f7d-00f0-4e36-8b54-0d9210668113"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            FullName = "Oliver Dodger",
-                            OutOfOfficeBalance = 10,
-                            PhotoUrl = "\\photos\\16c0f1a5-2d26-4be6-a690-2383571bf409.png",
-                            Position = "Project Manager",
-                            Status = "Active",
-                            Subdivision = "IT",
-                            UserId = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            FullName = "Grace Carney",
-                            OutOfOfficeBalance = 3,
-                            Position = "Programmer",
-                            Status = "Active",
-                            Subdivision = "IT",
-                            UserId = "3c155c25-ef31-41c0-9023-dbf59506d2c2"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            FullName = "Justin Valencia",
-                            OutOfOfficeBalance = 5,
-                            Position = "Accountant",
-                            Status = "Active",
-                            Subdivision = "Sales",
-                            UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef"
-                        });
                 });
 
             modelBuilder.Entity("OutOfOffice.Models.LeaveRequest", b =>
@@ -648,15 +476,7 @@ namespace OutOfOffice.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("PeoplePartnerId");
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("PeoplePartner");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OutOfOffice.Models.LeaveRequest", b =>
