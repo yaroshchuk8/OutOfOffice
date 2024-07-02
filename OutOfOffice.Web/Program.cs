@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.DataAccess.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace OutOfOffice.Web
 {
@@ -12,9 +13,14 @@ namespace OutOfOffice.Web
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddRazorPages();
+
             builder.Services.AddDbContext<ApplicationDbContext>(
                 options => options.UseSqlServer(connectionString)
                 );
+
+            builder.Services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();
 
@@ -31,8 +37,10 @@ namespace OutOfOffice.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
+            app.MapRazorPages();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
