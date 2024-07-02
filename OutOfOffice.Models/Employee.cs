@@ -1,18 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OutOfOffice.Models
 {
-    public class Employee
+    public class Employee : IdentityUser
     {
-        [Key]
-        public int Id { get; set; }
-
-        [Required]
-        public string UserId { get; set; }
-
         [Required]
         public string FullName { get; set; }
 
@@ -23,9 +16,9 @@ namespace OutOfOffice.Models
         public string Position { get; set; }
 
         [Required]
-        public string Status { get; set; }        
+        public string Status { get; set; }
 
-        public int? PeoplePartnerId { get; set; }
+        public string? PeoplePartnerId { get; set; }
 
         [Required]
         [Range(0, 30)]
@@ -35,11 +28,7 @@ namespace OutOfOffice.Models
         [Display(Name = "Photo")]
         public string? PhotoUrl { get; set; }
 
-        // Navigation properties
-        [ValidateNever]
-        [ForeignKey("UserId")]
-        public IdentityUser User { get; set; }
-
+        // Navigation property
         [ValidateNever]
         public Employee PeoplePartner { get; set; }
 

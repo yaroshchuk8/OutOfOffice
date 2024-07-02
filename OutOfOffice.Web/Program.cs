@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.DataAccess.Data;
-using Microsoft.AspNetCore.Identity;
+using OutOfOffice.Models;
 
 namespace OutOfOffice.Web
 {
@@ -20,6 +21,7 @@ namespace OutOfOffice.Web
                 );
 
             builder.Services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
             var app = builder.Build();

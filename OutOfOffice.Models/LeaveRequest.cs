@@ -10,7 +10,7 @@ namespace OutOfOffice.Models
         public int Id { get; set; }
 
         [Required]
-        public int EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         [Required]
         public string AbsenceReason { get; set; }

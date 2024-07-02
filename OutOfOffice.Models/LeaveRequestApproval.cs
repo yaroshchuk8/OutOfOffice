@@ -4,13 +4,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OutOfOffice.Models
 {
-    public class ApprovalRequest
+    public class LeaveRequestApproval
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        public int ApproverId { get; set; }
+        public string ApproverId { get; set; }
 
         [Required]
         public int LeaveRequestId { get; set; }

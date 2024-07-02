@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OutOfOffice.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using OutOfOffice.DataAccess.Data;
 namespace OutOfOffice.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240702221525_ExtendIdentityUserAndRenameIdentityTables")]
+    partial class ExtendIdentityUserAndRenameIdentityTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace OutOfOffice.DataAccess.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("EmployeeProject", b =>
-                {
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.HasKey("EmployeeId", "ProjectId");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("EmployeeProject");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -61,33 +49,7 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Role", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "2c5e174e-3b0e-446f-86af-483d56fd7210",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
-                        },
-                        new
-                        {
-                            Id = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379",
-                            Name = "HR manager",
-                            NormalizedName = "HR MANAGER"
-                        },
-                        new
-                        {
-                            Id = "57bde49e-8d41-45c4-baea-29141e2b2b6c",
-                            Name = "Project manager",
-                            NormalizedName = "PROJECT MANAGER"
-                        },
-                        new
-                        {
-                            Id = "92d723f4-81c5-4109-b962-bbec93185fe7",
-                            Name = "Employee",
-                            NormalizedName = "EMPLOYEE"
-                        });
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -112,7 +74,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaim", (string)null);
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -126,6 +88,11 @@ namespace OutOfOffice.DataAccess.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
@@ -179,7 +146,9 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.ToTable("AspNetUsers", (string)null);
 
-                    b.UseTptMappingStrategy();
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -204,7 +173,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Claim", (string)null);
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -228,7 +197,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Login", (string)null);
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -243,34 +212,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("EmployeeRole", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7210"
-                        },
-                        new
-                        {
-                            UserId = "91565f7d-00f0-4e36-8b54-0d9210668113",
-                            RoleId = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379"
-                        },
-                        new
-                        {
-                            UserId = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
-                            RoleId = "57bde49e-8d41-45c4-baea-29141e2b2b6c"
-                        },
-                        new
-                        {
-                            UserId = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
-                            RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
-                        },
-                        new
-                        {
-                            UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
-                            RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
-                        });
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -291,7 +233,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("Token", (string)null);
+                    b.ToTable("AspNetUserTokens", (string)null);
                 });
 
             modelBuilder.Entity("OutOfOffice.Models.LeaveRequest", b =>
@@ -312,7 +254,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.Property<string>("EmployeeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -325,8 +267,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EmployeeId");
 
                     b.ToTable("LeaveRequest");
                 });
@@ -341,7 +281,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.Property<string>("ApproverId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -355,10 +295,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApproverId");
-
-                    b.HasIndex("LeaveRequestId");
 
                     b.ToTable("LeaveRequestApproval");
                 });
@@ -379,7 +315,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.Property<string>("ManagerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -393,8 +329,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ManagerId");
 
                     b.ToTable("Project");
                 });
@@ -411,7 +345,7 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PeoplePartnerId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhotoUrl")
                         .HasColumnType("nvarchar(max)");
@@ -428,123 +362,7 @@ namespace OutOfOffice.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("PeoplePartnerId");
-
-                    b.ToTable("Employee", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "f3433776-130b-47bd-82d9-07273e345715",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "ADMIN@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBXaRglaUxJtmXRwCNr9GX6yIW6djekRIP17tvOmi7j5cmBv3Ayd/reoaEK8kU1vvw==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "b69d51b8-885d-4282-8565-bdea598fec3f",
-                            TwoFactorEnabled = false,
-                            UserName = "admin@gmail.com",
-                            FullName = "Denis McBoss",
-                            OutOfOfficeBalance = 15,
-                            Position = "Administrator",
-                            Status = "Active",
-                            Subdivision = "IT"
-                        },
-                        new
-                        {
-                            Id = "91565f7d-00f0-4e36-8b54-0d9210668113",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "170279bb-b36d-4334-af19-b11d6261b854",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "HRMANAGER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOU6ENjGUwBxAaRAhLEEVDlaN0Z0AJCQo9mA7t1+5IUo68BO15IuL8WS0XlSFf3E1g==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "b95c4165-e7fc-4a0e-9719-3990ed9842ba",
-                            TwoFactorEnabled = false,
-                            UserName = "hrmanager@gmail.com",
-                            FullName = "Alyssa Kennedy",
-                            OutOfOfficeBalance = 15,
-                            PhotoUrl = "\\photos\\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png",
-                            Position = "Hr Manager",
-                            Status = "Active",
-                            Subdivision = "Recruiting"
-                        },
-                        new
-                        {
-                            Id = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d13fccb4-3a67-4a0d-8555-1b459f50f9af",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "PROJECTMANAGER@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGaJSL6CLBBHeYPxLzLvgSyh2YygHa9ZLE8Vx3eLkGoGcSHKGVwtAXC0N8rlY6Mbwg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "da75e478-5921-42d3-8438-851799abf797",
-                            TwoFactorEnabled = false,
-                            UserName = "projectmanager@gmail.com",
-                            FullName = "Oliver Dodger",
-                            OutOfOfficeBalance = 10,
-                            PhotoUrl = "\\photos\\16c0f1a5-2d26-4be6-a690-2383571bf409.png",
-                            Position = "Project Manager",
-                            Status = "Active",
-                            Subdivision = "IT"
-                        },
-                        new
-                        {
-                            Id = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "92ba3018-c0a7-49b6-83dd-43dd97c20aa8",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "EMPLOYEE1@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAELkamKzJEdJ5Ryqjxo4zMAheYIRGc8dC0FK97Zcet3sGGfDP5c71BrEcZzIqe/imBg==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "27ad1851-eed5-45c5-9575-5bdab0602097",
-                            TwoFactorEnabled = false,
-                            UserName = "employee1@gmail.com",
-                            FullName = "Grace Carney",
-                            OutOfOfficeBalance = 3,
-                            Position = "Programmer",
-                            Status = "Active",
-                            Subdivision = "IT"
-                        },
-                        new
-                        {
-                            Id = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "bd7a3163-0b41-4ce1-a57e-16eba0551901",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            NormalizedUserName = "EMPLOYEE2@GMAIL.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHz5fek2qCu86OYnvOTkCtVk+m7DDingFC+kCGXxcCgJVMWMzGPpp9i9K3RvD0Y/AQ==",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "21a0ea7a-d246-4077-8293-46279d9cb904",
-                            TwoFactorEnabled = false,
-                            UserName = "employee2@gmail.com",
-                            FullName = "Justin Valencia",
-                            OutOfOfficeBalance = 5,
-                            Position = "Accountant",
-                            Status = "Active",
-                            Subdivision = "Sales"
-                        });
-                });
-
-            modelBuilder.Entity("EmployeeProject", b =>
-                {
-                    b.HasOne("OutOfOffice.Models.Employee", null)
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("OutOfOffice.Models.Project", null)
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasDiscriminator().HasValue("Employee");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -596,67 +414,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("OutOfOffice.Models.LeaveRequest", b =>
-                {
-                    b.HasOne("OutOfOffice.Models.Employee", "Employee")
-                        .WithMany("LeaveRequests")
-                        .HasForeignKey("EmployeeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Employee");
-                });
-
-            modelBuilder.Entity("OutOfOffice.Models.LeaveRequestApproval", b =>
-                {
-                    b.HasOne("OutOfOffice.Models.Employee", "Approver")
-                        .WithMany()
-                        .HasForeignKey("ApproverId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OutOfOffice.Models.LeaveRequest", "LeaveRequest")
-                        .WithMany()
-                        .HasForeignKey("LeaveRequestId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Approver");
-
-                    b.Navigation("LeaveRequest");
-                });
-
-            modelBuilder.Entity("OutOfOffice.Models.Project", b =>
-                {
-                    b.HasOne("OutOfOffice.Models.Employee", "Manager")
-                        .WithMany()
-                        .HasForeignKey("ManagerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Manager");
-                });
-
-            modelBuilder.Entity("OutOfOffice.Models.Employee", b =>
-                {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
-                        .WithOne()
-                        .HasForeignKey("OutOfOffice.Models.Employee", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("OutOfOffice.Models.Employee", "PeoplePartner")
-                        .WithMany()
-                        .HasForeignKey("PeoplePartnerId");
-
-                    b.Navigation("PeoplePartner");
-                });
-
-            modelBuilder.Entity("OutOfOffice.Models.Employee", b =>
-                {
-                    b.Navigation("LeaveRequests");
                 });
 #pragma warning restore 612, 618
         }

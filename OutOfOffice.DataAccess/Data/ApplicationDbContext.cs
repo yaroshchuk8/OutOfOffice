@@ -5,21 +5,20 @@ using OutOfOffice.Models;
 
 namespace OutOfOffice.DataAccess.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Employee> Employee { get; set; }
         public DbSet<Project> Project { get; set; }
         public DbSet<LeaveRequest> LeaveRequest { get; set; }
-        public DbSet<ApprovalRequest> ApprovalRequest { get; set; }
+        public DbSet<LeaveRequestApproval> LeaveRequestApproval { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // Entities configuration
-
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.PeoplePartner)
                 .WithMany()
@@ -50,19 +49,28 @@ namespace OutOfOffice.DataAccess.Data
                 .WithMany(e => e.LeaveRequests)
                 .HasForeignKey(lr => lr.EmployeeId);
 
-            modelBuilder.Entity<ApprovalRequest>()
+            modelBuilder.Entity<LeaveRequestApproval>()
                 .HasOne(ar => ar.Approver)
                 .WithMany()
                 .HasForeignKey(ar => ar.ApproverId);
 
-            modelBuilder.Entity<ApprovalRequest>()
+            modelBuilder.Entity<LeaveRequestApproval>()
                 .HasOne(ar => ar.LeaveRequest)
                 .WithMany()
                 .HasForeignKey(ar => ar.LeaveRequestId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Data seeding
-            // AspNetRoles
+            // Renaming ASP.NET Core Identity tables
+            modelBuilder.Entity<Employee>(entity => { entity.ToTable(name: "Employee"); });
+            modelBuilder.Entity<IdentityRole>(entity => { entity.ToTable(name: "Role"); });
+            modelBuilder.Entity<IdentityUserRole<string>>(entity => { entity.ToTable("EmployeeRole"); });
+            modelBuilder.Entity<IdentityUserClaim<string>>(entity => { entity.ToTable("Claim"); });
+            modelBuilder.Entity<IdentityUserLogin<string>>(entity => { entity.ToTable("Login"); });
+            modelBuilder.Entity<IdentityUserToken<string>>(entity => { entity.ToTable("Token"); });
+            modelBuilder.Entity<IdentityRoleClaim<string>>(entity => { entity.ToTable("RoleClaim"); });
+
+
+            // Seeding Role table
             modelBuilder.Entity<IdentityRole>().HasData(
                 new IdentityRole
                 {
@@ -91,47 +99,75 @@ namespace OutOfOffice.DataAccess.Data
             );
 
             // a hasher to hash the password before seeding the user to the db
-            var hasher = new PasswordHasher<IdentityUser>();
+            var hasher = new PasswordHasher<Employee>();
 
-            // AspNetUsers
-            modelBuilder.Entity<IdentityUser>().HasData(
-                new IdentityUser
+            // Seeding Employee table
+            modelBuilder.Entity<Employee>().HasData(
+                new Employee
                 {
                     Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                    FullName = "Denis McBoss",
+                    Subdivision = "IT",
+                    Position = "Administrator",
+                    Status = "Active",
+                    OutOfOfficeBalance = 15,
                     UserName = "admin@gmail.com",
                     NormalizedUserName = "admin@gmail.com".ToUpper(),
                     PasswordHash = hasher.HashPassword(null, "Admin1234_")
                 },
-                new IdentityUser
+                new Employee
                 {
                     Id = "91565f7d-00f0-4e36-8b54-0d9210668113",
+                    FullName = "Alyssa Kennedy",
+                    Subdivision = "Recruiting",
+                    Position = "Hr Manager",
+                    Status = "Active",
+                    OutOfOfficeBalance = 15,
+                    PhotoUrl = @"\photos\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png",
                     UserName = "hrmanager@gmail.com",
                     NormalizedUserName = "hrmanager@gmail.com".ToUpper(),
                     PasswordHash = hasher.HashPassword(null, "HR1234_")
                 },
-                new IdentityUser
+                new Employee
                 {
                     Id = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
+                    FullName = "Oliver Dodger",
+                    Subdivision = "IT",
+                    Position = "Project Manager",
+                    Status = "Active",
+                    OutOfOfficeBalance = 10,
+                    PhotoUrl = @"\photos\16c0f1a5-2d26-4be6-a690-2383571bf409.png",
                     UserName = "projectmanager@gmail.com",
                     NormalizedUserName = "projectmanager@gmail.com".ToUpper(),
                     PasswordHash = hasher.HashPassword(null, "Project1234_")
                 },
-                new IdentityUser
+                new Employee
                 {
                     Id = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
+                    FullName = "Grace Carney",
+                    Subdivision = "IT",
+                    Position = "Programmer",
+                    Status = "Active",
+                    OutOfOfficeBalance = 3,
                     UserName = "employee1@gmail.com",
                     NormalizedUserName = "employee1@gmail.com".ToUpper(),
                     PasswordHash = hasher.HashPassword(null, "Employee12341_")
                 },
-                new IdentityUser
+                new Employee
                 {
                     Id = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
+                    FullName = "Justin Valencia",
+                    Subdivision = "Sales",
+                    Position = "Accountant",
+                    Status = "Active",
+                    OutOfOfficeBalance = 5,
                     UserName = "employee2@gmail.com",
                     NormalizedUserName = "employee2@gmail.com".ToUpper(),
                     PasswordHash = hasher.HashPassword(null, "Employee12342_")
                 }
             );
 
+            // Seeding EmployeeRole table
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
                 // admin
                 new IdentityUserRole<string>
@@ -161,51 +197,6 @@ namespace OutOfOffice.DataAccess.Data
                 {
                     RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7",
                     UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef"
-                }
-            );
-
-            modelBuilder.Entity<Employee>().HasData(
-                new Employee()
-                {
-                    Id = 1,
-                    UserId = "91565f7d-00f0-4e36-8b54-0d9210668113",
-                    FullName = "Alyssa Kennedy",
-                    Subdivision = "Recruiting",
-                    Position = "Hr Manager",
-                    Status = "Active",
-                    OutOfOfficeBalance = 15,
-                    PhotoUrl = @"\photos\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png"
-                },
-                new Employee()
-                {
-                    Id = 2,
-                    UserId = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
-                    FullName = "Oliver Dodger",
-                    Subdivision = "IT",
-                    Position = "Project Manager",
-                    Status = "Active",
-                    OutOfOfficeBalance = 10,
-                    PhotoUrl = @"\photos\16c0f1a5-2d26-4be6-a690-2383571bf409.png"
-                },
-                new Employee()
-                {
-                    Id = 3,
-                    UserId = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
-                    FullName = "Grace Carney",
-                    Subdivision = "IT",
-                    Position = "Programmer",
-                    Status = "Active",
-                    OutOfOfficeBalance = 3
-                },
-                new Employee()
-                {
-                    Id = 4,
-                    UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
-                    FullName = "Justin Valencia",
-                    Subdivision = "Sales",
-                    Position = "Accountant",
-                    Status = "Active",
-                    OutOfOfficeBalance = 5
                 }
             );
         }
