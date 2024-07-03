@@ -20,7 +20,7 @@ namespace OutOfOffice.Web
                 options => options.UseSqlServer(connectionString)
                 );
 
-            builder.Services.AddDefaultIdentity<IdentityUser>()
+            builder.Services.AddDefaultIdentity<Employee>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
