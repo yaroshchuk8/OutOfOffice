@@ -27,6 +27,27 @@
                 <label asp-for="Input.ConfirmPassword">Confirm Password</label>
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
+            @* Custom fields *@
+            <div class="form-floating mb-3">
+                <input asp-for="Input.FullName" class="form-control" placeholder="John Cena" />
+                <label asp-for="Input.FullName">Full Name</label>
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Subdivision" class="form-control" placeholder="Sales" />
+                <label asp-for="Input.Subdivision">Subdivision</label>
+                <span asp-validation-for="Input.Subdivision" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Position" class="form-control" placeholder="Manager" />
+                <label asp-for="Input.Position">Position</label>
+                <span asp-validation-for="Input.Position" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Status" class="form-control" placeholder="Active/Inactive" />
+                <label asp-for="Input.Status">Status</label>
+                <span asp-validation-for="Input.Status" class="text-danger"></span>
+            </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>

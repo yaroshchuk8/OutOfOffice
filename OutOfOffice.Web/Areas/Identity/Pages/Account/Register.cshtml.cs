@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using OutOfOffice.Models;
@@ -91,6 +92,25 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Display(Name = "Full Name")]
+            public string FullName { get; set; }
+
+            [Required]
+            public string Subdivision { get; set; }
+
+            [Required]
+            public string Position { get; set; }
+
+            [Required]
+            public string Status { get; set; }
+
+            public string? PeoplePartnerId { get; set; }
+
+            [ValidateNever]
+            [Display(Name = "Photo")]
+            public string? PhotoUrl { get; set; }
         }
 
 
@@ -110,6 +130,13 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FullName = Input.FullName;
+                user.Subdivision = Input.Subdivision;
+                user.Position = Input.Position;
+                user.Status = Input.Status;
+                user.OutOfOfficeBalance = 0;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
