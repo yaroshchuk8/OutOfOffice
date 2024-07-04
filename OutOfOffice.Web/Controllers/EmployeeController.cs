@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using OutOfOffice.DataAccess.Data;
 using OutOfOffice.Models;
 using OutOfOffice.Models.ViewModels;
