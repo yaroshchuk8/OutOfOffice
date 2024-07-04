@@ -19,7 +19,11 @@ namespace OutOfOffice.Web.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Project> projects = _context.Project.Include("Manager").ToList(); 
+            IEnumerable<Project> projects = 
+                _context.Project
+                    .Include("Manager")
+                    .Include("Members")
+                    .ToList(); 
             return View(projects);
         }
 

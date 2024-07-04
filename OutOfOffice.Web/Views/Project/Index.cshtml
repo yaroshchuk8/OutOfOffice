@@ -23,6 +23,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Project Manager</th>
+                <th>Members</th>
                 <th>Comment</th>
                 <th>Status</th>
                 <td></td>
@@ -36,7 +37,13 @@
                     <td>@p.StartDate</td>
                     <td>@p.EndDate</td>
                     <td>@p.Manager?.FullName</td>
-                    <td>@p.Comment</td>
+                    <td>
+                        @foreach (Employee e in p.Members)
+                        {
+                            <small>@e.FullName; </small>
+                        }
+                    </td>
+                    <td><small>@p.Comment</small></td>
                     <td>@p.Status</td>
                     <td>
                         <a asp-controller="Project" asp-action="Upsert" asp-route-id="@p.Id" class="btn btn-primary mx-2">
@@ -48,7 +55,3 @@
         </tbody>
     </table>
 </div>
-
-@section Scripts {
-    <script src="~/js/itemDeletion.js"></script>
-}

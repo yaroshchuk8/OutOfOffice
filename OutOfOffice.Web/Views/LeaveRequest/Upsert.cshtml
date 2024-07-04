@@ -1,0 +1,51 @@
+﻿@model LeaveRequestVM
+
+@{
+    ViewData["Title"] = Model.LeaveRequest.Id != 0 ? "Update Leave Request" : "Create Leave Request";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <input asp-for="LeaveRequest.Id" hidden />
+            <input asp-for="LeaveRequest.EmployeeId" hidden />
+            <input asp-for="LeaveRequest.Status" hidden />
+            <div class="form-floating mb-3">
+                <select asp-for="LeaveRequest.AbsenceReason" asp-items="@Model.AbsenceReasonList" class="form-select border-0 shadow">
+                    <option disabled selected>--Select Absence Reason--</option>
+                </select>
+                <label asp-for="LeaveRequest.AbsenceReason" class="ms-2"></label>
+                <span asp-validation-for="LeaveRequest.AbsenceReason" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="LeaveRequest.StartDate" type="date" class="form-control" value="@(Model.LeaveRequest.Id != 0 ? @Model.LeaveRequest.StartDate.ToString("yyyy-MM-dd") : String.Empty)" />
+                <label asp-for="LeaveRequest.StartDate" class="ms-2">Start Date</label>
+                <span asp-validation-for="LeaveRequest.StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="LeaveRequest.EndDate" type="date" class="form-control" value="@(Model.LeaveRequest.Id != 0 ? @Model.LeaveRequest.EndDate.ToString("yyyy-MM-dd") : String.Empty)" />
+                <label asp-for="LeaveRequest.EndDate" class="ms-2">EndDate</label>
+                <span asp-validation-for="LeaveRequest.EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea asp-for="LeaveRequest.Comment" class="form-control" style="height:125px"></textarea>
+                <label asp-for="LeaveRequest.Comment"></label>
+                <span asp-validation-for="LeaveRequest.Comment" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary btn-lg form-control">@(Model.LeaveRequest.Id != 0 ? "Update" : "Create")</button>
+                </div>
+                <div class="col-3">
+                    <a asp-controller="LeaveRequest" asp-action="Index" class="btn btn-secondary btn-lg form-control">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

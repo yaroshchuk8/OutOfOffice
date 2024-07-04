@@ -17,12 +17,12 @@
                 <span asp-validation-for="Project.Type" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Project.StartDate" type="date" class="form-control" />
+                <input asp-for="Project.StartDate" type="date" class="form-control" value="@(Model.Project.Id != 0 ? @Model.Project.StartDate.ToString("yyyy-MM-dd") : String.Empty)"  />
                 <label asp-for="Project.StartDate" class="ms-2">Start Date</label>
                 <span asp-validation-for="Project.StartDate" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Project.EndDate" type="date" class="form-control" />
+                <input asp-for="Project.EndDate" type="date" class="form-control" value="@(Model.Project.Id != 0 ? @Model.Project.EndDate?.ToString("yyyy-MM-dd") : String.Empty)" />
                 <label asp-for="Project.EndDate" class="ms-2">EndDate</label>
                 <span asp-validation-for="Project.EndDate" class="text-danger"></span>
             </div>
@@ -52,8 +52,12 @@
                 <span asp-validation-for="Project.Status" class="text-danger"></span>
             </div>
             <div class="row">
-                <button type="submit" class="btn btn-primary btn-lg form-control">@(Model.Project.Id != 0 ? "Update" : "Create")</button>
-                <a asp-controller="Project" asp-action="Index" class="btn btn-secondary btn-lg form-control">Back to List</a>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary btn-lg form-control">@(Model.Project.Id != 0 ? "Update" : "Create")</button>
+                </div>
+                <div class="col-3">
+                    <a asp-controller="Project" asp-action="Index" class="btn btn-secondary btn-lg form-control">Back to List</a>
+                </div>
             </div>
         </form>
     </div>

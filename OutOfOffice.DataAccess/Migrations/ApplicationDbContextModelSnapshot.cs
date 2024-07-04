@@ -34,7 +34,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("ProjectId");
 
-                    b.ToTable("EmployeeProject");
+                    b.ToTable("EmployeeProject", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -452,7 +452,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("LeaveRequest");
+                    b.ToTable("LeaveRequest", (string)null);
                 });
 
             modelBuilder.Entity("OutOfOffice.Models.LeaveRequestApproval", b =>
@@ -484,7 +484,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("LeaveRequestId");
 
-                    b.ToTable("LeaveRequestApproval");
+                    b.ToTable("LeaveRequestApproval", (string)null);
                 });
 
             modelBuilder.Entity("OutOfOffice.Models.Project", b =>
@@ -520,7 +520,7 @@ namespace OutOfOffice.DataAccess.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("Project");
+                    b.ToTable("Project", (string)null);
                 });
 
             modelBuilder.Entity("EmployeeProject", b =>
