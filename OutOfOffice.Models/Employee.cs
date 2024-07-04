@@ -34,9 +34,9 @@ namespace OutOfOffice.Models
 
         // Navigation collections
         [ValidateNever]
-        public ICollection<Project> Projects { get; set; }
+        public List<Project> Projects { get; set; }
 
         [ValidateNever]
-        public ICollection<LeaveRequest> LeaveRequests { get; set; }
+        public List<LeaveRequest> LeaveRequests { get; set; }
     }
 }

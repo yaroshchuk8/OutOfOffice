@@ -12,8 +12,10 @@ namespace OutOfOffice.Models
         public string Type { get; set; }
 
         [Required]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime StartDate { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime? EndDate { get; set; }
 
         [Required]
@@ -30,6 +32,6 @@ namespace OutOfOffice.Models
 
         // Navigation Collection
         [ValidateNever]
-        public ICollection<Employee> Members { get; set; }
+        public List<Employee> Members { get; set; }
     }
 }
