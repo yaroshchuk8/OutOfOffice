@@ -8,8 +8,12 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
+using OutOfOffice.DataAccess.Data;
 using OutOfOffice.Models;
+using OutOfOffice.Models.ViewModels;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -18,6 +22,7 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<Employee> _signInManager;
         private readonly UserManager<Employee> _userManager;
         private readonly IUserStore<Employee> _userStore;
@@ -26,12 +31,14 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
 
         public RegisterModel(
+            ApplicationDbContext context,
             UserManager<Employee> userManager,
             IUserStore<Employee> userStore,
             SignInManager<Employee> signInManager,
             ILogger<RegisterModel> logger,
             IEmailSender emailSender)
         {
+            _context = context;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -46,6 +53,10 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
+        [BindProperty]
+        [ValidateNever]
+        public EmployeeVM EmployeeVM { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -106,7 +117,7 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
             [Required]
             public string Status { get; set; }
 
-            public string? PeoplePartnerId { get; set; }
+            public string PeoplePartnerId { get; set; }
 
             [ValidateNever]
             [Display(Name = "Photo")]
@@ -118,12 +129,34 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            EmployeeVM = new();
+            
+            // getting the list of hr managers out of db
+            string roleName = "HR manager";
+
+            var roleId = _context.Roles.FirstOrDefault(r => r.Name == roleName).Id;
+
+            var managerIds = _context.UserRoles
+                .Where(ur => ur.RoleId == roleId)
+            .Select(ur => ur.UserId)
+                .ToList();
+
+            EmployeeVM.HrManagerList = _context.Users
+                .Where(u => managerIds.Contains(u.Id))
+                .Select(u => new SelectListItem
+                {
+                    Text = u.FullName,
+                    Value = u.Id.ToString()
+                })
+                .ToList();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            ModelState.Remove("Employee");
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -135,7 +168,8 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
                 user.Subdivision = Input.Subdivision;
                 user.Position = Input.Position;
                 user.Status = Input.Status;
-                user.OutOfOfficeBalance = 0;
+                user.PeoplePartnerId = Input.PeoplePartnerId;
+                user.OutOfOfficeBalance = 30;
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
 

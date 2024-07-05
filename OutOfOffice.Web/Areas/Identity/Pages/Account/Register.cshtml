@@ -34,24 +34,37 @@
                 <span asp-validation-for="Input.FullName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Subdivision" class="form-control" placeholder="Sales" />
+                <select asp-for="Input.Subdivision" asp-items="@Model.EmployeeVM.SubdivisionList" class="form-select border-0 shadow">
+                    <option disabled selected>--Select Subdivision--</option>
+                </select>
                 <label asp-for="Input.Subdivision">Subdivision</label>
                 <span asp-validation-for="Input.Subdivision" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Position" class="form-control" placeholder="Manager" />
+                <select asp-for="Input.Position" asp-items="@Model.EmployeeVM.PositionList" class="form-select border-0 shadow">
+                    <option disabled selected>--Select Position--</option>
+                </select>
                 <label asp-for="Input.Position">Position</label>
                 <span asp-validation-for="Input.Position" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Status" class="form-control" placeholder="Active/Inactive" />
+                <select asp-for="Input.Status" asp-items="@Model.EmployeeVM.StatusList" class="form-select border-0 shadow">
+                    <option disabled selected>--Select Status--</option>
+                </select>
                 <label asp-for="Input.Status">Status</label>
                 <span asp-validation-for="Input.Status" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.PeoplePartnerId" asp-items="@Model.EmployeeVM.HrManagerList" class="form-select border-0 shadow">
+                    <option disabled selected>--Select People Partner--</option>
+                </select>
+                <label asp-for="Input.PeoplePartnerId">Status</label>
+                <span asp-validation-for="Input.PeoplePartnerId" class="text-danger"></span>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
     </div>
-    <div class="col-md-6 col-md-offset-2">
+    @* <div class="col-md-6 col-md-offset-2">
         <section>
             <h3>Use another service to register.</h3>
             <hr />
@@ -80,7 +93,7 @@
                 }
             }
         </section>
-    </div>
+    </div> *@
 </div>
 
 @section Scripts {
