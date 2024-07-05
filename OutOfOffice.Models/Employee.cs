@@ -18,10 +18,11 @@ namespace OutOfOffice.Models
         [Required]
         public string Status { get; set; }
 
-        public string? PeoplePartnerId { get; set; }
+        [Required]
+        public string PeoplePartnerId { get; set; }
 
         [Required]
-        [Range(0, 30)]
+        [Range(0, 30, ErrorMessage = "Number must be between 0 and 30")]
         public int OutOfOfficeBalance { get; set; }
 
         [ValidateNever]
