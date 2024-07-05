@@ -1,9 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using OutOfOffice.DataAccess.Data;
 using OutOfOffice.Models;
 using OutOfOffice.Models.ViewModels;
+using System.Security.Claims;
 
 namespace OutOfOffice.Web.Controllers
 {
@@ -17,13 +21,34 @@ namespace OutOfOffice.Web.Controllers
             _webHostEnvironment = webHostEnvironment;
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager")]
         public IActionResult Index()
         {
-            IEnumerable<Employee> employees = _context.Employee.ToList();
-            
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            List<Employee> employees;
+            // admin can access everybody
+            if (User.IsInRole("Admin"))
+            {
+                employees = _context.Employee.ToList();
+            }
+            // hr can access their subordinates
+            else if (User.IsInRole("HR manager"))
+            {
+                employees = _context.Employee.Include("PeoplePartner").Where(e => e.PeoplePartnerId == userId).ToList();                
+            }
+            // project manager can access their project(s) members
+            else
+            {
+                IEnumerable<Project> projects = _context.Project.Include("Members.PeoplePartner").Where(p => p.ManagerId == userId).ToList();
+                employees = new();
+                foreach (var p in projects)
+                    p.Members.ForEach(m => { if (!employees.Contains(m)) employees.Add(m); } );               
+            }
             return View(employees);
         }
-
+        
+        // only admin and hr are allowed to modify user information
+        [Authorize(Roles = "Admin,HR manager")]
         public IActionResult Update(string? id) 
         {
             Employee employee = _context.Employee.Find(id);
@@ -58,6 +83,8 @@ namespace OutOfOffice.Web.Controllers
             return View(employeeVM);
         }
 
+        // only admin and hr are allowed to modify user information
+        [Authorize(Roles = "Admin,HR manager")]
         [HttpPost]
         public IActionResult Update(EmployeeVM employeeVM, IFormFile? file)
         {

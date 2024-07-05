@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.DataAccess.Data;
 using OutOfOffice.Models;
@@ -16,13 +17,54 @@ namespace OutOfOffice.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager")]
         public IActionResult Index()
         {
-            IEnumerable<LeaveRequestApproval> leaveRequestApprovals = _context.LeaveRequestApproval.Include("Approver").ToList();
+            //List<LeaveRequest> leaveRequests;
+            IEnumerable<LeaveRequestApproval> leaveRequestApprovals;
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (User.IsInRole("Admin"))
+            {
+                leaveRequestApprovals = _context.LeaveRequestApproval.Include("Approver").ToList();
+            }
+            else if (User.IsInRole("HR manager"))
+            {
+                List<int> lrIds = new();
+                IEnumerable<Employee> subordinates = _context.Employee
+                    .Include("LeaveRequests")
+                    .Where(s => s.PeoplePartnerId == userId);
+                foreach (var s in subordinates)
+                    s.LeaveRequests.ForEach(lr => lrIds.Add(lr.Id));
+                leaveRequestApprovals = _context.LeaveRequestApproval
+                                            .Include("Approver")
+                                            .Where(lra => lrIds.Contains(lra.LeaveRequestId))
+                                            .ToList();
+            }
+            // project manager
+            else 
+            {
+                IEnumerable<Project> projects =
+                    _context.Project
+                        .Include("Manager")
+                        .Include("Members.LeaveRequests")
+                        .Where(p => p.ManagerId == userId)
+                        .ToList();
+                List<Employee> subordinates = new();
+                foreach (var p in projects)
+                    p.Members.ForEach(m => { if (!subordinates.Contains(m)) subordinates.Add(m); });
+                List<int> lrIds = new();
+                foreach (var s in subordinates)
+                    s.LeaveRequests.ForEach(lr => lrIds.Add(lr.Id));
+                leaveRequestApprovals = _context.LeaveRequestApproval
+                                            .Include("Approver")
+                                            .Where(lra => lrIds.Contains(lra.LeaveRequestId))
+                                            .ToList();
+            }
 
             return View(leaveRequestApprovals);
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager")]
         public IActionResult Update(int? id) 
         {
             LeaveRequestApproval leaveRequestApproval = 
@@ -39,6 +81,7 @@ namespace OutOfOffice.Web.Controllers
             return View(leaveRequestApproval);
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager,Employee")]
         public IActionResult Details(int? id)
         {
             if (id == null || id == 0)
@@ -59,6 +102,7 @@ namespace OutOfOffice.Web.Controllers
             return View(lra);
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager")]
         [HttpPost]
         public IActionResult Approve(LeaveRequestApproval lra)
         {
@@ -83,6 +127,7 @@ namespace OutOfOffice.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager")]
         [HttpPost]
         public IActionResult Reject(LeaveRequestApproval lra)
         {

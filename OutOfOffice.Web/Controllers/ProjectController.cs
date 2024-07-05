@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Graph;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Versioning;
 using OutOfOffice.DataAccess.Data;
 using OutOfOffice.Models;
 using OutOfOffice.Models.ViewModels;
+using System.Security.Claims;
 
 namespace OutOfOffice.Web.Controllers
 {
@@ -17,16 +20,46 @@ namespace OutOfOffice.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager,Employee")]
         public IActionResult Index()
         {
-            IEnumerable<Project> projects = 
-                _context.Project
+            List<Project> projects;
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (User.IsInRole("Admin"))
+            {
+                projects = _context.Project.Include("Manager").Include("Members").ToList();
+            }
+            else if (User.IsInRole("Project manager"))
+            {
+                projects = _context.Project
                     .Include("Manager")
                     .Include("Members")
-                    .ToList(); 
+                    .Where(p => p.ManagerId == userId)
+                    .ToList();
+            }
+            else if (User.IsInRole("HR manager"))
+            {
+                projects = new List<Project>();
+                IEnumerable<Employee> subordinates = _context.Employee
+                    .Include("Projects")
+                    .Where(e => e.PeoplePartnerId == userId)
+                    .ToList();
+                foreach (var s in subordinates)
+                    s.Projects.ForEach(p => { if (!projects.Contains(p)) projects.Add(p); });
+            }
+            else
+            {
+                projects = _context.Employee
+                    .Include("Projects.Manager")
+                    .FirstOrDefault(e => e.Id == userId)
+                    .Projects
+                    .ToList();
+            }
+                        
             return View(projects);
         }
 
+        [Authorize(Roles = "Admin,Project manager")]
         public IActionResult Upsert(int? id) 
         {
             ProjectVM projectVM = new();
@@ -88,6 +121,7 @@ namespace OutOfOffice.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin,Project manager")]
         [HttpPost]
         public IActionResult Upsert(ProjectVM projectVM)
         {

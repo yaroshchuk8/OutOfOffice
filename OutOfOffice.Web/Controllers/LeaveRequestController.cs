@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using OutOfOffice.DataAccess.Data;
 using OutOfOffice.Models;
@@ -16,12 +17,52 @@ namespace OutOfOffice.Web.Controllers
             _context = context;
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager,Employee")]
         public IActionResult Index()
         {
-            IEnumerable<LeaveRequest> leaveRequests = _context.LeaveRequest.Include("Employee").ToList();
+            List<LeaveRequest> leaveRequests;
+            string userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (User.IsInRole("Admin"))
+            {
+                leaveRequests = _context.LeaveRequest.Include("Employee").ToList();
+            }
+            else if (User.IsInRole("HR manager"))
+            {
+                leaveRequests = new();
+                IEnumerable<Employee> subordinates = _context.Employee
+                    .Include("LeaveRequests")
+                    .Where(s => s.PeoplePartnerId == userId);
+                foreach (var s in subordinates)
+                    s.LeaveRequests.ForEach(lr => leaveRequests.Add(lr));
+            }   
+            else if (User.IsInRole("Project manager"))
+            {
+                IEnumerable<Project> projects = 
+                    _context.Project
+                        .Include("Manager")
+                        .Include("Members.LeaveRequests")
+                        .Where(p => p.ManagerId == userId)
+                        .ToList();
+                List<Employee> subordinates = new();
+                foreach (var p in projects)
+                    p.Members.ForEach(m => { if (!subordinates.Contains(m)) subordinates.Add(m); });
+                leaveRequests = new();
+                foreach (var s in subordinates)
+                    s.LeaveRequests.ForEach(lr => leaveRequests.Add(lr));
+            }
+            else
+            {
+                leaveRequests = _context.Employee
+                    .Include("LeaveRequests")
+                    .FirstOrDefault(e => e.Id == userId)
+                    .LeaveRequests
+                    .ToList();
+            }
+            
             return View(leaveRequests);
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Upsert(int? id)
         {
             LeaveRequestVM leaveRequestVM = new();
@@ -49,6 +90,7 @@ namespace OutOfOffice.Web.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         [HttpPost]
         public IActionResult Upsert(LeaveRequestVM leaveRequestVM)
         {
@@ -69,6 +111,7 @@ namespace OutOfOffice.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,HR manager,Project manager,Employee")]
         public IActionResult Details(int? id)
         {
             if (id == null || id == 0)
@@ -85,7 +128,7 @@ namespace OutOfOffice.Web.Controllers
 
             return View(leaveRequest);
         }
-
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Submit(int? id)
         {
             if (id == null || id == 0)
@@ -111,6 +154,7 @@ namespace OutOfOffice.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = "Admin,Employee")]
         public IActionResult Cancel(int? id)
         {
             if (id == null || id == 0)
