@@ -47,6 +47,12 @@
                             <a asp-controller="LeaveRequest" asp-action="Submit" asp-route-id="@lr.Id" class="btn btn-success">Submit</a>
                             <a asp-controller="LeaveRequest" asp-action="Cancel" asp-route-id="@lr.Id" class="btn btn-danger">Cancel</a>
                         }
+                        else
+                        {
+                            <a asp-controller="LeaveRequestApproval" asp-action="Details" asp-route-id="@lr.Id" class="btn btn-info">
+                                Details
+                            </a>
+                        }
                     </td>
                 </tr>
             }

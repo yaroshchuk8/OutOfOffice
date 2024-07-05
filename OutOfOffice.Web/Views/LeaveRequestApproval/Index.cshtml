@@ -7,7 +7,7 @@
 <div class="container">
     <div class="row pt-4 pb-3">
         <div class="col-6">
-            <h2 class="text-primary">Leave Request Table</h2>
+            <h2 class="text-primary">Leave Request Approval Table</h2>
         </div>
         <div class="col-6 text-end">
             @* <a asp-controller="LeaveRequestApproval" asp-action="Upsert" class="btn btn-primary btn-lg">
@@ -35,15 +35,13 @@
                     <td>
                         @if (lra.Status == "New")
                         {
-                            <a asp-controller="LeaveRequestApproval" asp-action="Upsert" asp-route-id="@lra.Id" class="btn btn-primary">
+                            <a asp-controller="LeaveRequestApproval" asp-action="Update" asp-route-id="@lra.Id" class="btn btn-primary">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a asp-controller="LeaveRequest" asp-action="Details" asp-route-id="@lra.Id" class="btn btn-info">
-                                <i class="bi bi-info-square"></i>
-                            </a>
-                            <a asp-controller="LeaveRequestApproval" asp-action="Submit" asp-route-id="@lra.Id" class="btn btn-success">Submit</a>
-                            <a asp-controller="LeaveRequestApproval" asp-action="Cancel" asp-route-id="@lra.Id" class="btn btn-danger">Cancel</a>
                         }
+                        <a asp-controller="LeaveRequest" asp-action="Details" asp-route-id="@lra.LeaveRequestId" class="btn btn-info">
+                            Details
+                        </a>
                     </td>
                 </tr>
             }

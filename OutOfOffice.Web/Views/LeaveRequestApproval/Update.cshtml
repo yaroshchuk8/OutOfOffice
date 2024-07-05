@@ -1,0 +1,63 @@
+﻿@model LeaveRequestApproval
+
+@{
+    ViewData["Title"] = "Leave Request Approval";
+}
+
+<h1>@ViewData["Title"]</h1>
+Note that you will be saved as approver
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <input asp-for="Id" hidden />
+            <input asp-for="Status" hidden />
+            <input asp-for="ApproverId" hidden />
+            <input asp-for="LeaveRequestId" hidden />
+            <div class="form-floating mb-3">
+                <input asp-for="LeaveRequest.Employee.FullName" class="form-control" disabled />
+                <label asp-for="LeaveRequest.Employee.FullName" class="ms-2"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="LeaveRequest.AbsenceReason" class="form-control" disabled />
+                <label asp-for="LeaveRequest.AbsenceReason" class="ms-2"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" value="@Model.LeaveRequest.StartDate" disabled />
+                <label asp-for="LeaveRequest.StartDate" class="ms-2">Start Date</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input value="@Model.LeaveRequest.EndDate" class="form-control" disabled />
+                <label asp-for="LeaveRequest.EndDate" class="ms-2">EndDate</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea asp-for="LeaveRequest.Comment" class="form-control" style="height:125px" disabled></textarea>
+                <label asp-for="LeaveRequest.Comment">Comment by @Model.LeaveRequest.Employee.FullName</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea asp-for="Comment" class="form-control" style="height:125px"></textarea>
+                <label asp-for="Comment">Approver's comment</label>
+                <span asp-validation-for="Comment" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button type="submit" asp-controller="LeaveRequestApproval" asp-action="Approve" class="btn btn-success btn-lg form-control">Approve</button>
+                </div>
+                <div class="col-3">
+                    <button type="submit" asp-controller="LeaveRequestApproval" asp-action="Reject" class="btn btn-danger btn-lg form-control">Reject</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <a asp-controller="LeaveRequestApproval" asp-action="Index" class="btn btn-secondary btn-lg form-control">Back to List</a>
+                </div>
+                <div class="col-3">
+                    <a asp-controller="LeaveRequest" asp-action="Details" asp-route-id="@Model.LeaveRequestId" class="btn btn-info btn-lg form-control">Details</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

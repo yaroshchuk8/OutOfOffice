@@ -1,0 +1,30 @@
+﻿@model LeaveRequestApproval
+
+@{
+    ViewData["Title"] = "Leave Request Approval Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <div class="form-floating mb-3">
+                <input asp-for="Approver.FullName" class="form-control" disabled />
+                <label asp-for="Approver.FullName" class="ms-2">Approver Full Name</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea asp-for="Comment" class="form-control" style="height:125px" disabled></textarea>
+                <label asp-for="Comment"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Status" class="form-control" disabled />
+                <label asp-for="Status" class="ms-2"></label>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
