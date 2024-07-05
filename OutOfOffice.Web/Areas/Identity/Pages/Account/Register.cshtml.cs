@@ -117,6 +117,7 @@ namespace OutOfOffice.Web.Areas.Identity.Pages.Account
             [Required]
             public string Status { get; set; }
 
+            [Required]
             public string PeoplePartnerId { get; set; }
 
             [ValidateNever]

@@ -19,6 +19,7 @@ namespace OutOfOffice.Models
         public string Status { get; set; }
 
         [Required]
+        [Display(Name = "People Partner")]
         public string PeoplePartnerId { get; set; }
 
         [Required]

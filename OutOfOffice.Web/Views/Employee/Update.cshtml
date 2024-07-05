@@ -57,7 +57,14 @@
                 <input type="file" name="file" class="form-control border-0 shadow" />
                 <label asp-for="@Model.Employee.PhotoUrl" class="ms-2"></label>
             </div>
-            <button type="submit" class="w-100 btn btn-lg btn-primary">Update</button>
+            <div class="row">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary btn-lg form-control">Update</button>
+                </div>
+                <div class="col-3">
+                    <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary btn-lg form-control">Back to List</a>
+                </div>
+            </div>
         </form>
     </div>
 </div>

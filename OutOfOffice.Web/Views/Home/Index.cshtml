@@ -2,7 +2,107 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+<div>
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Here is a table of pre-defined users:</p>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Role</th>
+                <th>Login</th>
+                <th>Password</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Admin</th>
+                <th>admin@gmail.com</th>
+                <th>Admin1234_</th>
+            </tr>
+            <tr>
+                <th>HR Manager</th>
+                <th>hrmanager@gmail.com</th>
+                <th>HR1234_</th>
+            </tr>
+            <tr>
+                <th>HR Manager</th>
+                <th>hrmanager2@gmail.com</th>
+                <th>HR12342_</th>
+            </tr>
+            <tr>
+                <th>Project manager</th>
+                <th>projectmanager@gmail.com</th>
+                <th>Project1234_</th>
+            </tr>
+            <tr>
+                <th>Project manager</th>
+                <th>projectmanager2@gmail.com</th>
+                <th>Project12342_</th>
+            </tr>
+            <tr>
+                <th>Employee</th>
+                <th>employee1@gmail.com</th>
+                <th>Employee12341_</th>
+            </tr>
+            <tr>
+                <th>Employee</th>
+                <th>employee2@gmail.com</th>
+                <th>Employee12342_</th>
+            </tr>
+            <tr>
+                <th>Employee</th>
+                <th>employee3@gmail.com</th>
+                <th>Employee12343_</th>
+            </tr>
+            <tr>
+                <th>Employee</th>
+                <th>employee4@gmail.com</th>
+                <th>Employee12344_</th>
+            </tr>
+        </tbody>
+    </table>
+    <p>Here is the list of rights granted to particular roles:</p>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Role</th>
+                <th>Rights</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Admin</th>
+                <th>Can do everything</th>
+            </tr>
+            <tr>
+                <th>HR Manager</th>
+                <th>
+                    <p>Can read and modify info about associated employees (the one's they are People Partner to) in /Employee</p>
+                    <p>Can approve/reject and read Leave Requests of associated employees in /LeaveRequestApproval</p>
+                    <p>Can read info about Projects of associated employees in /Project</p>
+                </th>
+            </tr>
+            <tr>
+                <th>Project manager</th>
+                <th>
+                    <p>Can create and assign employees to their projects in /Project</p>
+                    <p>Can approve/reject and read Leave Requests of associated employees (members of manager's projects) in /LeaveRequestsApproval</p>
+                    <p>Can read info about associated employees in /Employee</p>
+                </th>
+            </tr>
+            <tr>
+                <th>Employee</th>
+                <th>
+                    <p>Can create Leave Requests (submit/cancel them) and monitor their state in /LeaveRequest</p>
+                    <p>Can read info about their projects in /Project</p>
+                </th>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
+<style>
+    th {
+        font-weight: normal;
+    }
+</style>

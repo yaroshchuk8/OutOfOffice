@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OutOfOffice.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIdentityAndCreateEntitiesAndSeedDbTables : Migration
+    public partial class AddIdentityAndCreateEntitiesWithConnectionsAndSeedTables : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,7 +22,7 @@ namespace OutOfOffice.DataAccess.Migrations
                     Subdivision = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PeoplePartnerId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PeoplePartnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     OutOfOfficeBalance = table.Column<int>(type: "int", nullable: false),
                     PhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -47,7 +47,8 @@ namespace OutOfOffice.DataAccess.Migrations
                         name: "FK_Employee_Employee_PeoplePartnerId",
                         column: x => x.PeoplePartnerId,
                         principalTable: "Employee",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -95,7 +96,7 @@ namespace OutOfOffice.DataAccess.Migrations
                     AbsenceReason = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -227,7 +228,7 @@ namespace OutOfOffice.DataAccess.Migrations
                     ApproverId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     LeaveRequestId = table.Column<int>(type: "int", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -272,14 +273,7 @@ namespace OutOfOffice.DataAccess.Migrations
             migrationBuilder.InsertData(
                 table: "Employee",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "OutOfOfficeBalance", "PasswordHash", "PeoplePartnerId", "PhoneNumber", "PhoneNumberConfirmed", "PhotoUrl", "Position", "SecurityStamp", "Status", "Subdivision", "TwoFactorEnabled", "UserName" },
-                values: new object[,]
-                {
-                    { "3c155c25-ef31-41c0-9023-dbf59506d2c2", 0, "02fbe290-6e82-4246-a0d8-b7b1b4bc6225", null, false, "Grace Carney", false, null, null, "EMPLOYEE1@GMAIL.COM", 3, "AQAAAAIAAYagAAAAEFLBVrJZcaR2rJjdOMoualp+8WKaCfir6hkYJ8DKx8eN7gC5f+JfjFYb5yc4z+/H8w==", null, null, false, null, "Programmer", "0ff654e2-38cc-45b9-943c-eed2bfe9362b", "Active", "IT", false, "employee1@gmail.com" },
-                    { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "4ed11de6-d72c-4bda-b867-1cc43c7e8662", null, false, "Denis McBoss", false, null, null, "ADMIN@GMAIL.COM", 15, "AQAAAAIAAYagAAAAEAzmvnS6b7deoUQpXN4k9dM21NPD1mrP80LteLkLX661sOgWrmjKFRcy2UFAMoPQiQ==", null, null, false, null, "Administrator", "c5e1fae3-05bb-420d-a267-f0277d7b84f6", "Active", "IT", false, "admin@gmail.com" },
-                    { "91565f7d-00f0-4e36-8b54-0d9210668113", 0, "0ab0fd36-d2d4-43e6-bb74-8360c00aecc1", null, false, "Alyssa Kennedy", false, null, null, "HRMANAGER@GMAIL.COM", 15, "AQAAAAIAAYagAAAAEGUBqZhk/tS0RvP5Ac+dCskP7QI7R1XA7u+bmhsyZ1zGmlLD31Ir3yHrDg8jZGibSA==", null, null, false, "\\photos\\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png", "Hr Manager", "aca415a3-0aae-44cc-bc94-9066a5e70695", "Active", "Recruiting", false, "hrmanager@gmail.com" },
-                    { "c97575f3-7279-42a7-a52c-8c9c04e5d8b6", 0, "1a32cf73-4ba7-48d5-a266-311815336f0d", null, false, "Oliver Dodger", false, null, null, "PROJECTMANAGER@GMAIL.COM", 10, "AQAAAAIAAYagAAAAEPqdmjCmeXJm+7txaYNHN+flSdK+8hBy0TTCTgRc1vmVlQ9QuVYxrAPxltUvIX8XQg==", null, null, false, "\\photos\\16c0f1a5-2d26-4be6-a690-2383571bf409.png", "Project Manager", "032c0ec1-37bf-4b7e-868e-1c3d40eb8aa4", "Active", "IT", false, "projectmanager@gmail.com" },
-                    { "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef", 0, "4e90b94b-5a33-4af8-8f0c-64a98ec89d1d", null, false, "Justin Valencia", false, null, null, "EMPLOYEE2@GMAIL.COM", 5, "AQAAAAIAAYagAAAAEFahM5Fqfm4NcFUtUJHqQP7UeV2Fr4ReydoiPqSFUnWfhUKDVikyEidqIytGS1Bc4w==", null, null, false, null, "Accountant", "2dd10d7c-9369-472f-b7fb-99914777bc69", "Active", "Sales", false, "employee2@gmail.com" }
-                });
+                values: new object[] { "8e445865-a24d-4543-a6c6-9443d048cdb9", 0, "5766e4aa-4934-422a-8cb7-b860d560873b", null, false, "Denis McBoss", false, null, null, "ADMIN@GMAIL.COM", 30, "AQAAAAIAAYagAAAAENs64pUVmZly/iLiuTd2zs1dwTNLz6shbC6JtvIKXqGXIkT8nlH3aIGf0cSCU7pFJQ==", "8e445865-a24d-4543-a6c6-9443d048cdb9", null, false, null, "Administrator", "86465aef-4ad8-460a-89cb-fb4e75137130", "Active", "Administration", false, "admin@gmail.com" });
 
             migrationBuilder.InsertData(
                 table: "Role",
@@ -293,14 +287,44 @@ namespace OutOfOffice.DataAccess.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Employee",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "OutOfOfficeBalance", "PasswordHash", "PeoplePartnerId", "PhoneNumber", "PhoneNumberConfirmed", "PhotoUrl", "Position", "SecurityStamp", "Status", "Subdivision", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "39040db5-17ed-4437-9454-86218e9f2a21", 0, "783606fd-0629-4870-b6db-2a66eded11a2", null, false, "Khalil O'Reilly", false, null, null, "PROJECTMANAGER2@GMAIL.COM", 30, "AQAAAAIAAYagAAAAEHSR9SGNIcSRWqGyNJNFLrWP1LPnSCdO11MeCgCwEA6SzyaEewZ/FbpYKhatyuWxUg==", "8e445865-a24d-4543-a6c6-9443d048cdb9", null, false, null, "Project manager", "e4395ece-87bb-437b-b597-e9ccccf5abba", "Active", "Marketing", false, "projectmanager2@gmail.com" },
+                    { "8825ba1e-f826-42fa-bc2c-bca4a91e64af", 0, "48b4a261-8bc2-4a87-9a26-e88ef013ee64", null, false, "Ciara Montes", false, null, null, "HRMANAGER2@GMAIL.COM", 30, "AQAAAAIAAYagAAAAEFJeRl/kRlQp2U5WipVk6Ht2n5rNszYRb6FbKNMtbPamxFdr9mOkY1Md7Lz5muI+Bw==", "8e445865-a24d-4543-a6c6-9443d048cdb9", null, false, null, "HR manager", "dbeb77bc-cf02-4244-97f0-fc207fb96342", "Active", "Human Resources", false, "hrmanager2@gmail.com" },
+                    { "91565f7d-00f0-4e36-8b54-0d9210668113", 0, "77e4c3a7-0a0e-4476-8a24-e43bb6d4c8dc", null, false, "Alyssa Kennedy", false, null, null, "HRMANAGER@GMAIL.COM", 30, "AQAAAAIAAYagAAAAEMEJgl1sKj677opF/zBQI9QZaGB3JjGkPSf7IMBMujJvSglhW/FTjqssd7mX+m/b/w==", "8e445865-a24d-4543-a6c6-9443d048cdb9", null, false, "\\photos\\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png", "HR manager", "61274506-dcdd-431d-ab77-068efcaa5968", "Active", "Human Resources", false, "hrmanager@gmail.com" },
+                    { "c97575f3-7279-42a7-a52c-8c9c04e5d8b6", 0, "f0862528-3a22-4e8b-9d61-d5721360dd94", null, false, "Oliver Dodger", false, null, null, "PROJECTMANAGER@GMAIL.COM", 30, "AQAAAAIAAYagAAAAEJn8WKxmo8hfkYLjjdvD4Z1x7Obods3cXwcbTc7NgSacvH8j6dANbDzDmSuNfinz+w==", "8e445865-a24d-4543-a6c6-9443d048cdb9", null, false, "\\photos\\16c0f1a5-2d26-4be6-a690-2383571bf409.png", "Project manager", "aaeb52bb-766d-4883-b8d8-475896bb163e", "Active", "IT", false, "projectmanager@gmail.com" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "EmployeeRole",
+                columns: new[] { "RoleId", "UserId" },
+                values: new object[] { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8e445865-a24d-4543-a6c6-9443d048cdb9" });
+
+            migrationBuilder.InsertData(
+                table: "Employee",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FullName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "OutOfOfficeBalance", "PasswordHash", "PeoplePartnerId", "PhoneNumber", "PhoneNumberConfirmed", "PhotoUrl", "Position", "SecurityStamp", "Status", "Subdivision", "TwoFactorEnabled", "UserName" },
+                values: new object[,]
+                {
+                    { "357af2a2-5650-48b8-81af-6d1355b94d98", 0, "8f218d52-d40c-4a68-92d0-8eeda8519b52", null, false, "Ibraheem Harrison", false, null, null, "EMPLOYEE4@GMAIL.COM", 30, "AQAAAAIAAYagAAAAEHBQaM8nApc8ZBsMA/USB7d9OsGU11AWfaKJYqRypuq1rgObpDg6e3Sef5KmqYyyBA==", "8825ba1e-f826-42fa-bc2c-bca4a91e64af", null, false, null, "Receptionist", "78a8caf2-7934-4ee5-b6de-7ce22c8e52d7", "Active", "Marketing", false, "employee4@gmail.com" },
+                    { "3c155c25-ef31-41c0-9023-dbf59506d2c2", 0, "c40c00a6-6941-42c7-8ccb-08dd9160d9c6", null, false, "Grace Carney", false, null, null, "EMPLOYEE1@GMAIL.COM", 30, "AQAAAAIAAYagAAAAECf5q65l+527WS/+Y6wI9LAwD0EW+e9Y2ez5R9qDWyzuTeqcdrNcr2TMFAokDOcmKA==", "91565f7d-00f0-4e36-8b54-0d9210668113", null, false, null, "Back-end developer", "639beb1c-87d9-4ac4-91b4-aaaeb959488b", "Active", "IT", false, "employee1@gmail.com" },
+                    { "df501ef6-7187-4126-82fc-d3dce8f7c73e", 0, "6e74496e-5b17-48ed-bf7e-1b5c22870a50", null, false, "Mia Irwin", false, null, null, "EMPLOYEE3@GMAIL.COM", 30, "AQAAAAIAAYagAAAAEBCQJkyZ5FFuJX8HNctn7QUK/ErMfoRXJ1AsOl/auIxF0mNOiIsgn0cAWrBZdpQkZw==", "91565f7d-00f0-4e36-8b54-0d9210668113", null, false, null, "Sales manager", "cf078be3-a5d2-48e2-a565-5638e59e7d38", "Active", "Finance", false, "employee3@gmail.com" },
+                    { "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef", 0, "b399f647-b2b7-4f4d-9f37-3ed4bf7731f1", null, false, "Justin Valencia", false, null, null, "EMPLOYEE2@GMAIL.COM", 30, "AQAAAAIAAYagAAAAENW2uqvaS250ynLl1PwZD1kcl1niT1c7+mz0hFO/oEbfVSk4JzDrFvxxwkKjiNucyQ==", "8825ba1e-f826-42fa-bc2c-bca4a91e64af", null, false, null, "Accountant", "3ea5b7e5-006d-4a7d-9034-910fb158f7e9", "Active", "Sales", false, "employee2@gmail.com" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "EmployeeRole",
                 columns: new[] { "RoleId", "UserId" },
                 values: new object[,]
                 {
-                    { "92d723f4-81c5-4109-b962-bbec93185fe7", "3c155c25-ef31-41c0-9023-dbf59506d2c2" },
-                    { "2c5e174e-3b0e-446f-86af-483d56fd7210", "8e445865-a24d-4543-a6c6-9443d048cdb9" },
+                    { "57bde49e-8d41-45c4-baea-29141e2b2b6c", "39040db5-17ed-4437-9454-86218e9f2a21" },
+                    { "ce7db7fd-ba3f-4cc7-8d37-a831b0725379", "8825ba1e-f826-42fa-bc2c-bca4a91e64af" },
                     { "ce7db7fd-ba3f-4cc7-8d37-a831b0725379", "91565f7d-00f0-4e36-8b54-0d9210668113" },
                     { "57bde49e-8d41-45c4-baea-29141e2b2b6c", "c97575f3-7279-42a7-a52c-8c9c04e5d8b6" },
+                    { "92d723f4-81c5-4109-b962-bbec93185fe7", "357af2a2-5650-48b8-81af-6d1355b94d98" },
+                    { "92d723f4-81c5-4109-b962-bbec93185fe7", "3c155c25-ef31-41c0-9023-dbf59506d2c2" },
+                    { "92d723f4-81c5-4109-b962-bbec93185fe7", "df501ef6-7187-4126-82fc-d3dce8f7c73e" },
                     { "92d723f4-81c5-4109-b962-bbec93185fe7", "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef" }
                 });
 

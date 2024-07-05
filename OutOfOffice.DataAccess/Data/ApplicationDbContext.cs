@@ -22,7 +22,8 @@ namespace OutOfOffice.DataAccess.Data
             modelBuilder.Entity<Employee>()
                 .HasOne(e => e.PeoplePartner)
                 .WithMany()
-                .HasForeignKey(e => e.PeoplePartnerId);
+                .HasForeignKey(e => e.PeoplePartnerId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Employee>()
                 .HasMany(e => e.Projects)
@@ -106,52 +107,86 @@ namespace OutOfOffice.DataAccess.Data
                     {
                         entity.ToTable(name: "Employee");
                         entity.HasData(
+                            // admin
                             new Employee
                             {
                                 Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                                 FullName = "Denis McBoss",
-                                Subdivision = "IT",
+                                Subdivision = "Administration",
                                 Position = "Administrator",
                                 Status = "Active",
-                                OutOfOfficeBalance = 15,
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                                 UserName = "admin@gmail.com",
                                 NormalizedUserName = "admin@gmail.com".ToUpper(),
                                 PasswordHash = hasher.HashPassword(null, "Admin1234_")
                             },
+                            // hr managers
                             new Employee
                             {
                                 Id = "91565f7d-00f0-4e36-8b54-0d9210668113",
                                 FullName = "Alyssa Kennedy",
-                                Subdivision = "Recruiting",
-                                Position = "Hr Manager",
+                                Subdivision = "Human Resources",
+                                Position = "HR manager",
                                 Status = "Active",
-                                OutOfOfficeBalance = 15,
+                                OutOfOfficeBalance = 30,
                                 PhotoUrl = @"\photos\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png",
+                                PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                                 UserName = "hrmanager@gmail.com",
                                 NormalizedUserName = "hrmanager@gmail.com".ToUpper(),
                                 PasswordHash = hasher.HashPassword(null, "HR1234_")
                             },
                             new Employee
                             {
+                                Id = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
+                                FullName = "Ciara Montes",
+                                Subdivision = "Human Resources",
+                                Position = "HR manager",
+                                Status = "Active",
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                                UserName = "hrmanager2@gmail.com",
+                                NormalizedUserName = "hrmanager2@gmail.com".ToUpper(),
+                                PasswordHash = hasher.HashPassword(null, "HR12342_")
+                            },
+                            // project managers
+                            new Employee
+                            {
                                 Id = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
                                 FullName = "Oliver Dodger",
                                 Subdivision = "IT",
-                                Position = "Project Manager",
+                                Position = "Project manager",
                                 Status = "Active",
-                                OutOfOfficeBalance = 10,
+                                OutOfOfficeBalance = 30,
                                 PhotoUrl = @"\photos\16c0f1a5-2d26-4be6-a690-2383571bf409.png",
+                                PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                                 UserName = "projectmanager@gmail.com",
                                 NormalizedUserName = "projectmanager@gmail.com".ToUpper(),
                                 PasswordHash = hasher.HashPassword(null, "Project1234_")
                             },
                             new Employee
                             {
+                                Id = "39040db5-17ed-4437-9454-86218e9f2a21",
+                                FullName = "Khalil O'Reilly",
+                                Subdivision = "Marketing",
+                                Position = "Project manager",
+                                Status = "Active",
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                                UserName = "projectmanager2@gmail.com",
+                                NormalizedUserName = "projectmanager2@gmail.com".ToUpper(),
+                                PasswordHash = hasher.HashPassword(null, "Project12342_")
+                            },
+                            // employees
+                            new Employee
+                            {
                                 Id = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
                                 FullName = "Grace Carney",
                                 Subdivision = "IT",
-                                Position = "Programmer",
+                                Position = "Back-end developer",
                                 Status = "Active",
-                                OutOfOfficeBalance = 3,
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "91565f7d-00f0-4e36-8b54-0d9210668113",
                                 UserName = "employee1@gmail.com",
                                 NormalizedUserName = "employee1@gmail.com".ToUpper(),
                                 PasswordHash = hasher.HashPassword(null, "Employee12341_")
@@ -163,10 +198,37 @@ namespace OutOfOffice.DataAccess.Data
                                 Subdivision = "Sales",
                                 Position = "Accountant",
                                 Status = "Active",
-                                OutOfOfficeBalance = 5,
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
                                 UserName = "employee2@gmail.com",
                                 NormalizedUserName = "employee2@gmail.com".ToUpper(),
                                 PasswordHash = hasher.HashPassword(null, "Employee12342_")
+                            },
+                            new Employee
+                            {
+                                Id = "df501ef6-7187-4126-82fc-d3dce8f7c73e",
+                                FullName = "Mia Irwin",
+                                Subdivision = "Finance",
+                                Position = "Sales manager",
+                                Status = "Active",
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "91565f7d-00f0-4e36-8b54-0d9210668113",
+                                UserName = "employee3@gmail.com",
+                                NormalizedUserName = "employee3@gmail.com".ToUpper(),
+                                PasswordHash = hasher.HashPassword(null, "Employee12343_")
+                            },
+                            new Employee
+                            {
+                                Id = "357af2a2-5650-48b8-81af-6d1355b94d98",
+                                FullName = "Ibraheem Harrison",
+                                Subdivision = "Marketing",
+                                Position = "Receptionist",
+                                Status = "Active",
+                                OutOfOfficeBalance = 30,
+                                PeoplePartnerId = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
+                                UserName = "employee4@gmail.com",
+                                NormalizedUserName = "employee4@gmail.com".ToUpper(),
+                                PasswordHash = hasher.HashPassword(null, "Employee12344_")
                             }
                         );
                     }
@@ -186,11 +248,21 @@ namespace OutOfOffice.DataAccess.Data
                     RoleId = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379",
                     UserId = "91565f7d-00f0-4e36-8b54-0d9210668113"
                 },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379",
+                    UserId = "8825ba1e-f826-42fa-bc2c-bca4a91e64af"
+                },
                 // project manager
                 new IdentityUserRole<string>
                 {
                     RoleId = "57bde49e-8d41-45c4-baea-29141e2b2b6c",
                     UserId = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "57bde49e-8d41-45c4-baea-29141e2b2b6c",
+                    UserId = "39040db5-17ed-4437-9454-86218e9f2a21"
                 },
                 // employees
                 new IdentityUserRole<string>
@@ -202,6 +274,16 @@ namespace OutOfOffice.DataAccess.Data
                 {
                     RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7",
                     UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7",
+                    UserId = "df501ef6-7187-4126-82fc-d3dce8f7c73e"
+                },
+                new IdentityUserRole<string>
+                {
+                    RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7",
+                    UserId = "357af2a2-5650-48b8-81af-6d1355b94d98"
                 }
             );
         }

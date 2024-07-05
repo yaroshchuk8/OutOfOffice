@@ -10,6 +10,7 @@ namespace OutOfOffice.Models
         public int Id { get; set; }
 
         [Required]
+        [Display(Name = "Approver")]
         public string ApproverId { get; set; }
 
         [Required]

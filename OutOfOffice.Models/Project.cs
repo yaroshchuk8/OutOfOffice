@@ -19,6 +19,7 @@ namespace OutOfOffice.Models
         public DateTime? EndDate { get; set; }
 
         [Required]
+        [Display(Name = "Manager")]
         public string ManagerId { get; set; }
 
         public string? Comment { get; set; }

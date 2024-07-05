@@ -12,8 +12,8 @@ using OutOfOffice.DataAccess.Data;
 namespace OutOfOffice.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240704121450_AddIdentityAndCreateEntitiesAndSeedDbTables")]
-    partial class AddIdentityAndCreateEntitiesAndSeedDbTables
+    [Migration("20240705151742_AddIdentityAndCreateEntitiesWithConnectionsAndSeedTables")]
+    partial class AddIdentityAndCreateEntitiesWithConnectionsAndSeedTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -194,7 +194,17 @@ namespace OutOfOffice.DataAccess.Migrations
                         },
                         new
                         {
+                            UserId = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
+                            RoleId = "ce7db7fd-ba3f-4cc7-8d37-a831b0725379"
+                        },
+                        new
+                        {
                             UserId = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
+                            RoleId = "57bde49e-8d41-45c4-baea-29141e2b2b6c"
+                        },
+                        new
+                        {
+                            UserId = "39040db5-17ed-4437-9454-86218e9f2a21",
                             RoleId = "57bde49e-8d41-45c4-baea-29141e2b2b6c"
                         },
                         new
@@ -205,6 +215,16 @@ namespace OutOfOffice.DataAccess.Migrations
                         new
                         {
                             UserId = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
+                            RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
+                        },
+                        new
+                        {
+                            UserId = "df501ef6-7187-4126-82fc-d3dce8f7c73e",
+                            RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
+                        },
+                        new
+                        {
+                            UserId = "357af2a2-5650-48b8-81af-6d1355b94d98",
                             RoleId = "92d723f4-81c5-4109-b962-bbec93185fe7"
                         });
                 });
@@ -274,6 +294,7 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PeoplePartnerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("PhoneNumber")
@@ -326,18 +347,19 @@ namespace OutOfOffice.DataAccess.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4ed11de6-d72c-4bda-b867-1cc43c7e8662",
+                            ConcurrencyStamp = "5766e4aa-4934-422a-8cb7-b860d560873b",
                             EmailConfirmed = false,
                             FullName = "Denis McBoss",
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN@GMAIL.COM",
-                            OutOfOfficeBalance = 15,
-                            PasswordHash = "AQAAAAIAAYagAAAAEAzmvnS6b7deoUQpXN4k9dM21NPD1mrP80LteLkLX661sOgWrmjKFRcy2UFAMoPQiQ==",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAENs64pUVmZly/iLiuTd2zs1dwTNLz6shbC6JtvIKXqGXIkT8nlH3aIGf0cSCU7pFJQ==",
+                            PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             PhoneNumberConfirmed = false,
                             Position = "Administrator",
-                            SecurityStamp = "c5e1fae3-05bb-420d-a267-f0277d7b84f6",
+                            SecurityStamp = "86465aef-4ad8-460a-89cb-fb4e75137130",
                             Status = "Active",
-                            Subdivision = "IT",
+                            Subdivision = "Administration",
                             TwoFactorEnabled = false,
                             UserName = "admin@gmail.com"
                         },
@@ -345,37 +367,59 @@ namespace OutOfOffice.DataAccess.Migrations
                         {
                             Id = "91565f7d-00f0-4e36-8b54-0d9210668113",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0ab0fd36-d2d4-43e6-bb74-8360c00aecc1",
+                            ConcurrencyStamp = "77e4c3a7-0a0e-4476-8a24-e43bb6d4c8dc",
                             EmailConfirmed = false,
                             FullName = "Alyssa Kennedy",
                             LockoutEnabled = false,
                             NormalizedUserName = "HRMANAGER@GMAIL.COM",
-                            OutOfOfficeBalance = 15,
-                            PasswordHash = "AQAAAAIAAYagAAAAEGUBqZhk/tS0RvP5Ac+dCskP7QI7R1XA7u+bmhsyZ1zGmlLD31Ir3yHrDg8jZGibSA==",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAEMEJgl1sKj677opF/zBQI9QZaGB3JjGkPSf7IMBMujJvSglhW/FTjqssd7mX+m/b/w==",
+                            PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             PhoneNumberConfirmed = false,
                             PhotoUrl = "\\photos\\780bde51-e8e8-43ca-8db4-cda2e4ff4248.png",
-                            Position = "Hr Manager",
-                            SecurityStamp = "aca415a3-0aae-44cc-bc94-9066a5e70695",
+                            Position = "HR manager",
+                            SecurityStamp = "61274506-dcdd-431d-ab77-068efcaa5968",
                             Status = "Active",
-                            Subdivision = "Recruiting",
+                            Subdivision = "Human Resources",
                             TwoFactorEnabled = false,
                             UserName = "hrmanager@gmail.com"
                         },
                         new
                         {
+                            Id = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "48b4a261-8bc2-4a87-9a26-e88ef013ee64",
+                            EmailConfirmed = false,
+                            FullName = "Ciara Montes",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "HRMANAGER2@GMAIL.COM",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAEFJeRl/kRlQp2U5WipVk6Ht2n5rNszYRb6FbKNMtbPamxFdr9mOkY1Md7Lz5muI+Bw==",
+                            PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            PhoneNumberConfirmed = false,
+                            Position = "HR manager",
+                            SecurityStamp = "dbeb77bc-cf02-4244-97f0-fc207fb96342",
+                            Status = "Active",
+                            Subdivision = "Human Resources",
+                            TwoFactorEnabled = false,
+                            UserName = "hrmanager2@gmail.com"
+                        },
+                        new
+                        {
                             Id = "c97575f3-7279-42a7-a52c-8c9c04e5d8b6",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "1a32cf73-4ba7-48d5-a266-311815336f0d",
+                            ConcurrencyStamp = "f0862528-3a22-4e8b-9d61-d5721360dd94",
                             EmailConfirmed = false,
                             FullName = "Oliver Dodger",
                             LockoutEnabled = false,
                             NormalizedUserName = "PROJECTMANAGER@GMAIL.COM",
-                            OutOfOfficeBalance = 10,
-                            PasswordHash = "AQAAAAIAAYagAAAAEPqdmjCmeXJm+7txaYNHN+flSdK+8hBy0TTCTgRc1vmVlQ9QuVYxrAPxltUvIX8XQg==",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAEJn8WKxmo8hfkYLjjdvD4Z1x7Obods3cXwcbTc7NgSacvH8j6dANbDzDmSuNfinz+w==",
+                            PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             PhoneNumberConfirmed = false,
                             PhotoUrl = "\\photos\\16c0f1a5-2d26-4be6-a690-2383571bf409.png",
-                            Position = "Project Manager",
-                            SecurityStamp = "032c0ec1-37bf-4b7e-868e-1c3d40eb8aa4",
+                            Position = "Project manager",
+                            SecurityStamp = "aaeb52bb-766d-4883-b8d8-475896bb163e",
                             Status = "Active",
                             Subdivision = "IT",
                             TwoFactorEnabled = false,
@@ -383,18 +427,39 @@ namespace OutOfOffice.DataAccess.Migrations
                         },
                         new
                         {
+                            Id = "39040db5-17ed-4437-9454-86218e9f2a21",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "783606fd-0629-4870-b6db-2a66eded11a2",
+                            EmailConfirmed = false,
+                            FullName = "Khalil O'Reilly",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "PROJECTMANAGER2@GMAIL.COM",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAEHSR9SGNIcSRWqGyNJNFLrWP1LPnSCdO11MeCgCwEA6SzyaEewZ/FbpYKhatyuWxUg==",
+                            PeoplePartnerId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            PhoneNumberConfirmed = false,
+                            Position = "Project manager",
+                            SecurityStamp = "e4395ece-87bb-437b-b597-e9ccccf5abba",
+                            Status = "Active",
+                            Subdivision = "Marketing",
+                            TwoFactorEnabled = false,
+                            UserName = "projectmanager2@gmail.com"
+                        },
+                        new
+                        {
                             Id = "3c155c25-ef31-41c0-9023-dbf59506d2c2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "02fbe290-6e82-4246-a0d8-b7b1b4bc6225",
+                            ConcurrencyStamp = "c40c00a6-6941-42c7-8ccb-08dd9160d9c6",
                             EmailConfirmed = false,
                             FullName = "Grace Carney",
                             LockoutEnabled = false,
                             NormalizedUserName = "EMPLOYEE1@GMAIL.COM",
-                            OutOfOfficeBalance = 3,
-                            PasswordHash = "AQAAAAIAAYagAAAAEFLBVrJZcaR2rJjdOMoualp+8WKaCfir6hkYJ8DKx8eN7gC5f+JfjFYb5yc4z+/H8w==",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAECf5q65l+527WS/+Y6wI9LAwD0EW+e9Y2ez5R9qDWyzuTeqcdrNcr2TMFAokDOcmKA==",
+                            PeoplePartnerId = "91565f7d-00f0-4e36-8b54-0d9210668113",
                             PhoneNumberConfirmed = false,
-                            Position = "Programmer",
-                            SecurityStamp = "0ff654e2-38cc-45b9-943c-eed2bfe9362b",
+                            Position = "Back-end developer",
+                            SecurityStamp = "639beb1c-87d9-4ac4-91b4-aaaeb959488b",
                             Status = "Active",
                             Subdivision = "IT",
                             TwoFactorEnabled = false,
@@ -404,20 +469,61 @@ namespace OutOfOffice.DataAccess.Migrations
                         {
                             Id = "efa05cf9-5f6f-41ff-a3b7-a4b2d40739ef",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4e90b94b-5a33-4af8-8f0c-64a98ec89d1d",
+                            ConcurrencyStamp = "b399f647-b2b7-4f4d-9f37-3ed4bf7731f1",
                             EmailConfirmed = false,
                             FullName = "Justin Valencia",
                             LockoutEnabled = false,
                             NormalizedUserName = "EMPLOYEE2@GMAIL.COM",
-                            OutOfOfficeBalance = 5,
-                            PasswordHash = "AQAAAAIAAYagAAAAEFahM5Fqfm4NcFUtUJHqQP7UeV2Fr4ReydoiPqSFUnWfhUKDVikyEidqIytGS1Bc4w==",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAENW2uqvaS250ynLl1PwZD1kcl1niT1c7+mz0hFO/oEbfVSk4JzDrFvxxwkKjiNucyQ==",
+                            PeoplePartnerId = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
                             PhoneNumberConfirmed = false,
                             Position = "Accountant",
-                            SecurityStamp = "2dd10d7c-9369-472f-b7fb-99914777bc69",
+                            SecurityStamp = "3ea5b7e5-006d-4a7d-9034-910fb158f7e9",
                             Status = "Active",
                             Subdivision = "Sales",
                             TwoFactorEnabled = false,
                             UserName = "employee2@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "df501ef6-7187-4126-82fc-d3dce8f7c73e",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "6e74496e-5b17-48ed-bf7e-1b5c22870a50",
+                            EmailConfirmed = false,
+                            FullName = "Mia Irwin",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "EMPLOYEE3@GMAIL.COM",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAEBCQJkyZ5FFuJX8HNctn7QUK/ErMfoRXJ1AsOl/auIxF0mNOiIsgn0cAWrBZdpQkZw==",
+                            PeoplePartnerId = "91565f7d-00f0-4e36-8b54-0d9210668113",
+                            PhoneNumberConfirmed = false,
+                            Position = "Sales manager",
+                            SecurityStamp = "cf078be3-a5d2-48e2-a565-5638e59e7d38",
+                            Status = "Active",
+                            Subdivision = "Finance",
+                            TwoFactorEnabled = false,
+                            UserName = "employee3@gmail.com"
+                        },
+                        new
+                        {
+                            Id = "357af2a2-5650-48b8-81af-6d1355b94d98",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8f218d52-d40c-4a68-92d0-8eeda8519b52",
+                            EmailConfirmed = false,
+                            FullName = "Ibraheem Harrison",
+                            LockoutEnabled = false,
+                            NormalizedUserName = "EMPLOYEE4@GMAIL.COM",
+                            OutOfOfficeBalance = 30,
+                            PasswordHash = "AQAAAAIAAYagAAAAEHBQaM8nApc8ZBsMA/USB7d9OsGU11AWfaKJYqRypuq1rgObpDg6e3Sef5KmqYyyBA==",
+                            PeoplePartnerId = "8825ba1e-f826-42fa-bc2c-bca4a91e64af",
+                            PhoneNumberConfirmed = false,
+                            Position = "Receptionist",
+                            SecurityStamp = "78a8caf2-7934-4ee5-b6de-7ce22c8e52d7",
+                            Status = "Active",
+                            Subdivision = "Marketing",
+                            TwoFactorEnabled = false,
+                            UserName = "employee4@gmail.com"
                         });
                 });
 
@@ -434,7 +540,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmployeeId")
@@ -471,7 +576,6 @@ namespace OutOfOffice.DataAccess.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("LeaveRequestId")
@@ -596,7 +700,9 @@ namespace OutOfOffice.DataAccess.Migrations
                 {
                     b.HasOne("OutOfOffice.Models.Employee", "PeoplePartner")
                         .WithMany()
-                        .HasForeignKey("PeoplePartnerId");
+                        .HasForeignKey("PeoplePartnerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("PeoplePartner");
                 });

@@ -42,8 +42,8 @@ namespace OutOfOffice.Models.ViewModels
                 },
                 new SelectListItem
                 {
-                    Text = "Sales",
-                    Value = "Sales"
+                    Text = "Administration",
+                    Value = "Administration"
                 }
             };
 
@@ -97,6 +97,16 @@ namespace OutOfOffice.Models.ViewModels
                 {
                     Text = "Data analyst",
                     Value = "Data analyst"
+                },
+                new SelectListItem
+                {
+                    Text = "HR manager",
+                    Value = "HR manager"
+                },
+                new SelectListItem
+                {
+                    Text = "Project manager",
+                    Value = "Project manager"
                 }
             };
         }
