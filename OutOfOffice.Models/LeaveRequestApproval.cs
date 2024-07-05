@@ -18,7 +18,7 @@ namespace OutOfOffice.Models
         [Required]
         public string Status { get; set; }
 
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         // Navigation properties
         [ForeignKey("ApproverId")]

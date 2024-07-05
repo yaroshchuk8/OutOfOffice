@@ -39,9 +39,14 @@
                     <td><small>@lr.Comment</small></td>
                     <td>@lr.Status</td>
                     <td>
-                        <a asp-controller="LeaveRequest" asp-action="Upsert" asp-route-id="@lr.Id" class="btn btn-primary mx-2">
-                            <i class="bi bi-pencil-square"></i>
-                        </a>
+                        @if (lr.Status == "New")
+                        {
+                            <a asp-controller="LeaveRequest" asp-action="Upsert" asp-route-id="@lr.Id" class="btn btn-primary">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                            <a asp-controller="LeaveRequest" asp-action="Submit" asp-route-id="@lr.Id" class="btn btn-success">Submit</a>
+                            <a asp-controller="LeaveRequest" asp-action="Cancel" asp-route-id="@lr.Id" class="btn btn-danger">Cancel</a>
+                        }
                     </td>
                 </tr>
             }

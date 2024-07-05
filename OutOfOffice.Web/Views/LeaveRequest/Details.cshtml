@@ -1,0 +1,42 @@
+﻿@model LeaveRequest
+
+@{
+    ViewData["Title"] = "Leave Request Details";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form>
+            <div class="form-floating mb-3">
+                <input asp-for="Employee.FullName" class="form-control" disabled />
+                <label asp-for="Employee.FullName" class="ms-2"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="AbsenceReason"  class="form-control" disabled/>
+                <label asp-for="AbsenceReason" class="ms-2"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input class="form-control" value="@Model.StartDate" disabled />
+                <label asp-for="StartDate" class="ms-2">Start Date</label>
+            </div>
+            <div class="form-floating mb-3">
+                <input value="@Model.EndDate" class="form-control" disabled />
+                <label asp-for="EndDate" class="ms-2">EndDate</label>
+            </div>
+            <div class="form-floating mb-3">
+                <textarea asp-for="Comment" class="form-control" style="height:125px" disabled></textarea>
+                <label asp-for="Comment"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Status" class="form-control" disabled />
+                <label asp-for="Status" class="ms-2"></label>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
