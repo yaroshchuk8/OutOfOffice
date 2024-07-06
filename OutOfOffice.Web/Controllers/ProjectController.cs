@@ -41,7 +41,7 @@ namespace OutOfOffice.Web.Controllers
             {
                 projects = new List<Project>();
                 IEnumerable<Employee> subordinates = _context.Employee
-                    .Include("Projects")
+                    .Include("Projects.Manager")
                     .Where(e => e.PeoplePartnerId == userId)
                     .ToList();
                 foreach (var s in subordinates)

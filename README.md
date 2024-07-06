@@ -3,7 +3,7 @@
 ### Execution in terminal:
 
 ```bash
-> git https://github.com/yaroshchuk8/OutOfOffice.git
+> git clone https://github.com/yaroshchuk8/OutOfOffice.git
 > cd .\OutOfOffice\OutOfOffice.Web\
 ```
 > If needed, modify connection string in ./OutOfOffice.Web/appsettings.json according to your SQL Server path

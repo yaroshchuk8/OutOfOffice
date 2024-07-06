@@ -113,11 +113,7 @@ namespace OutOfOffice.Web.Controllers
 
             var totalDaysAbsence = lr.EndDate.Subtract(lr.StartDate).TotalDays;
             lr.Employee.OutOfOfficeBalance -= (int)totalDaysAbsence;
-            if (lr.Employee.OutOfOfficeBalance < 0)
-            {
-                return NotFound();
-            }
-
+            
             _context.Employee.Update(lr.Employee);
             _context.LeaveRequest.Update(lr);
             _context.LeaveRequestApproval.Update(lra);

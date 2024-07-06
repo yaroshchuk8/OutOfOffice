@@ -70,9 +70,11 @@ namespace OutOfOffice.Web.Controllers
             // create new entry
             if (id == null || id == 0)
             {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 leaveRequestVM.LeaveRequest = new()
                 {
-                    EmployeeId = User.FindFirstValue(ClaimTypes.NameIdentifier),
+                    EmployeeId = userId,
+                    Employee = _context.Employee.Find(userId),
                     Status = "New"
                 };
                 
@@ -94,21 +96,29 @@ namespace OutOfOffice.Web.Controllers
         [HttpPost]
         public IActionResult Upsert(LeaveRequestVM leaveRequestVM)
         {
-            // updating existing entry
-            var id = leaveRequestVM.LeaveRequest.Id;
-            if (id != 0)
+            if (ModelState.IsValid)
             {
-                _context.LeaveRequest.Update(leaveRequestVM.LeaveRequest);
+                leaveRequestVM.LeaveRequest.Employee = null;
+                // updating existing entry
+                var id = leaveRequestVM.LeaveRequest.Id;
+                if (id != 0)
+                {
+                    _context.LeaveRequest.Update(leaveRequestVM.LeaveRequest);
+                }
+                // adding new entry
+                else
+                {
+                    _context.LeaveRequest.Add(leaveRequestVM.LeaveRequest);
+                }
+
+                _context.SaveChanges();
+
+                return RedirectToAction("Index");
             }
-            // adding new entry
             else
             {
-                _context.LeaveRequest.Add(leaveRequestVM.LeaveRequest);
+                return View(leaveRequestVM);
             }
-
-            _context.SaveChanges();
-
-            return RedirectToAction("Index");
         }
 
         [Authorize(Roles = "Admin,HR manager,Project manager,Employee")]
@@ -128,6 +138,7 @@ namespace OutOfOffice.Web.Controllers
 
             return View(leaveRequest);
         }
+
         [Authorize(Roles = "Admin,Employee")]
         public IActionResult Submit(int? id)
         {

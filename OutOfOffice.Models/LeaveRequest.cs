@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using OutOfOffice.Models.Validations;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace OutOfOffice.Models
 {
+    [DateRangeValidation]
     public class LeaveRequest
     {
         [Key]
@@ -18,7 +19,7 @@ namespace OutOfOffice.Models
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-        public DateTime StartDate{ get; set; }
+        public DateTime StartDate { get; set; }
 
         [Required]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
