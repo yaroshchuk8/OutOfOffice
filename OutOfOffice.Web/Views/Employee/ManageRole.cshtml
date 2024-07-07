@@ -1,0 +1,37 @@
+﻿@model RoleVM
+@{
+    ViewData["Title"] = "Update Role";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <form method="post">
+            <input asp-for="Employee.Id" hidden />
+            <div class="form-floating mb-3">
+                <input asp-for="Employee.FullName" class="form-control" disabled />
+                <label asp-for="Employee.FullName"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="SelectedRole" asp-items="@Model.RoleList" class="form-select border-0 shadow">
+                    <option disabled selected>--Select Role--</option>
+                </select>
+                <label asp-for="SelectedRole" class="ms-2">People Partner</label>
+                <span asp-validation-for="SelectedRole" class="text-danger"></span>
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary btn-lg form-control">Update</button>
+                </div>
+                <div class="col-3">
+                    <a asp-controller="Employee" asp-action="Index" class="btn btn-secondary btn-lg form-control">Back to List</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

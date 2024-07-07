@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
@@ -15,10 +16,18 @@ namespace OutOfOffice.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public EmployeeController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<Employee> _userManager;
+
+        public EmployeeController(ApplicationDbContext context,
+            IWebHostEnvironment webHostEnvironment,
+            RoleManager<IdentityRole> roleManager,
+            UserManager<Employee> userManager)
         {
             _context = context;
             _webHostEnvironment = webHostEnvironment;
+            _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         [Authorize(Roles = "Admin,HR manager,Project manager")]
@@ -126,6 +135,39 @@ namespace OutOfOffice.Web.Controllers
             {
                 return View();
             }
+        }
+
+        // only admin can manage other users' roles
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ManageRole(string? id)
+        {
+            RoleVM roleVM = new();
+            roleVM.Employee = _context.Employee.Find(id);
+
+            var userRole = _context.UserRoles.FirstOrDefault(ur => ur.UserId == id);
+            var selectedRole = _context.Roles.FirstOrDefault(r => r.Id == userRole.RoleId);
+            roleVM.SelectedRole = selectedRole.Id;
+            roleVM.RoleList = _roleManager.Roles
+                .Select(r => new SelectListItem
+                    {
+                        Text = r.Name,
+                        Value = r.Id
+                    }).ToList();
+
+            return View(roleVM);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> ManageRole(RoleVM roleVM)
+        {
+            var userRoles = await _userManager.GetRolesAsync(roleVM.Employee);
+            await _userManager.RemoveFromRolesAsync(roleVM.Employee, userRoles);
+            var role = _context.Roles.Find(roleVM.SelectedRole);
+            await _userManager.AddToRoleAsync(roleVM.Employee, role.Name);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }

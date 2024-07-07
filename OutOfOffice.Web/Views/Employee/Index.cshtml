@@ -44,6 +44,10 @@
                         <a asp-controller="Employee" asp-action="Update" asp-route-id="@e.Id" class="btn btn-primary mx-2">
                             <i class="bi bi-pencil-square"></i>
                         </a>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-controller="Employee" asp-action="ManageRole" asp-route-id="@e.Id" class="btn btn-info">Role</a>
+                        }
                     </td>
                 </tr>
             }
